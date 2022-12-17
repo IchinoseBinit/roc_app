@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:roc_app/widgets/body_template.dart';
+import '/screens/auth/login_screen.dart';
+import '/widgets/body_template.dart';
 
 import '/constants/constants.dart';
 import '/providers/user_provider.dart';
-import '/screens/login_screen.dart';
 import '/utils/firebase_helper.dart';
 import '/utils/navigate.dart';
 import '/utils/validation_mixin.dart';
@@ -125,28 +125,27 @@ class RegisterProfileScreen extends StatelessWidget {
               onPressed: () async {
                 if (formKey.currentState!.validate()) {
                   try {
-                    print("hello");
-                    final map =
-                        Provider.of<UserProvider>(context, listen: false)
-                            .createUser(
-                      uuid: uuid,
-                      email: email,
-                      name: nameController.text,
-                      address: addressController.text,
-                      isFoodDonor: isFoodDonorController.text == "true",
-                      phoneNumber: phoneController.text,
-                      panNumber: panController.text.isEmpty
-                          ? null
-                          : panController.text,
-                    );
-                    print("hello");
-                    await FirebaseHelper().addOrUpdateContent(
-                      context,
-                      collectionId: UserConstants.userCollection,
-                      whereId: UserConstants.userId,
-                      whereValue: uuid,
-                      map: map,
-                    );
+                    // print("hello");
+                    // final map =
+                    //     Provider.of<UserProvider>(context, listen: false)
+                    //         .createUser(
+                    //   uuid: uuid,
+                    //   email: email,
+                    //   name: nameController.text,
+                    //   address: addressController.text,
+                    //   phoneNumber: phoneController.text,
+                    //   panNumber: panController.text.isEmpty
+                    //       ? null
+                    //       : panController.text,
+                    // );
+                    // print("hello");
+                    // await FirebaseHelper().addOrUpdateContent(
+                    //   context,
+                    //   collectionId: UserConstants.userCollection,
+                    //   whereId: UserConstants.userId,
+                    //   whereValue: uuid,
+                    //   map: map,
+                    // );
                     // ignore: use_build_context_synchronously
                     navigateAndRemoveAll(context, LoginScreen());
                   } catch (ex) {

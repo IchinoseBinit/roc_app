@@ -2,15 +2,17 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:roc_app/screens/navigation/navigation_screen.dart';
+import 'package:roc_app/theme/theme_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '/screens/login_screen.dart';
+import '/screens/auth/login_screen.dart';
 import '/utils/preferences_helper.dart';
 import '/constants/constants.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  // await Firebase.initializeApp();
   PreferencesHelper.prefs = await SharedPreferences.getInstance();
   runApp(const MyApp());
 }
@@ -23,12 +25,12 @@ class MyApp extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.light,
+        statusBarIconBrightness: Brightness.dark,
         statusBarBrightness: Brightness.dark,
         systemNavigationBarColor: Colors.transparent,
         systemNavigationBarDividerColor: Colors.transparent,
         systemNavigationBarIconBrightness: Brightness.dark,
-        // systemNavigationBarContrastEnforced: true,
+        systemNavigationBarContrastEnforced: true,
       ),
     );
 
@@ -52,10 +54,8 @@ class MyApp extends StatelessWidget {
               child: child!,
             ),
           ),
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
-          home: LoginScreen(),
+          theme: lightTheme(context),
+          home: NavigationScreen(),
         );
       },
     );

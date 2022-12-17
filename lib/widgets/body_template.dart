@@ -18,7 +18,7 @@ class BodyTemplate extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: MediaQuery.of(context).size.height,
+      // height: MediaQuery.of(context).size.height,
       padding: padding ?? basePadding,
       child: ScrollConfiguration(
         behavior: MyBehavior(),

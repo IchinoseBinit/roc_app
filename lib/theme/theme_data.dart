@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:roc_app/constants/constants.dart';
+import '/constants/constants.dart';
 
 ThemeData lightTheme(BuildContext context) {
   return ThemeData(
-    primaryColor: Colors.green,
-    scaffoldBackgroundColor: Colors.green,
+    primaryColor: baseColor,
+    scaffoldBackgroundColor: primaryColor,
     iconTheme: const IconThemeData(color: Colors.blue),
     backgroundColor: primaryColor,
     appBarTheme: AppBarTheme(
@@ -16,23 +16,35 @@ ThemeData lightTheme(BuildContext context) {
       ),
       elevation: 0,
     ),
-    textTheme: const TextTheme(
+    textTheme: TextTheme(
       headline5: TextStyle(
         color: Colors.black,
         fontFamily: "Open Sans",
         fontWeight: FontWeight.w600,
+        fontSize: 20.sp,
       ),
-      headline2: TextStyle(color: Colors.black),
-      bodyText1: TextStyle(color: Colors.black, fontFamily: "Open Sans"),
-      bodyText2: TextStyle(color: Colors.black),
-      subtitle1: TextStyle(
+      headline6: const TextStyle(
+        color: Colors.black,
+        fontFamily: "Open Sans",
+        fontWeight: FontWeight.w600,
+      ),
+      headline1: TextStyle(
+        color: Colors.black,
+        fontFamily: "Open Sans",
+        fontWeight: FontWeight.w700,
+        fontSize: 32.sp,
+      ),
+      headline2: const TextStyle(color: Colors.black),
+      bodyText1: const TextStyle(color: Colors.black, fontFamily: "Open Sans"),
+      bodyText2: const TextStyle(color: Colors.black),
+      subtitle1: const TextStyle(
         color: Colors.black,
         fontFamily: "Open Sans",
       ),
-      subtitle2: TextStyle(
+      subtitle2: const TextStyle(
         color: Colors.black,
       ),
-      caption: TextStyle(
+      caption: const TextStyle(
         color: Colors.black,
         fontFamily: "Open Sans",
       ),

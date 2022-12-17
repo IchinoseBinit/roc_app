@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
-const Color baseColor = Colors.red;
+const Color baseColor = Color(0xFFF69B11);
 const Color primaryColor = Color(0XFFC6E0E9);
 
 const double padding = 16.0;
@@ -23,7 +23,7 @@ const passwordKey = "password";
 class ImageConstants {
   static const _basePath = "assets/images";
   static const logo = "$_basePath/logo.png";
-  static const logoWithName = "$_basePath/logo_with_name.jpg";
+  static const logoWithName = "$_basePath/logo_with_name.png";
   static const pdfDownload = "$_basePath/pdf_download.png";
 
   static const notificationIcon = "notification";

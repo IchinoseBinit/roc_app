@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '/constants/constants.dart';
 
 // ignore: must_be_immutable
 class GeneralElevatedButton extends StatelessWidget {
@@ -21,7 +22,7 @@ class GeneralElevatedButton extends StatelessWidget {
     Key? key,
     this.isSmallText = false,
     required this.title,
-    this.bgColor,
+    this.bgColor = baseColor,
     this.fgColor,
     this.borderRadius,
     this.isDisabled = false,
