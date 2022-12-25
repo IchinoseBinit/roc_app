@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "201878673300",
+    "project_id": "roc-app-1f39c",
+    "storage_bucket": "roc-app-1f39c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:201878673300:android:175e520b24322b6e2f6181",
+        "android_client_info": {
+          "package_name": "com.example.roc_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "201878673300-5qkvu6foqfole5f9pd8j1b5vc7uh04dv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.roc_app",
+            "certificate_hash": "67dc0ed9d1c837960a49707abc5c2c02f54db40f"
+          }
+        },
+        {
+          "client_id": "201878673300-qlaeim7fjogjajr27rhosjeq52rrg2gq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUFPo6bKfqQ1PFnE_JC6UZfY1PE9CnOkE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "201878673300-qlaeim7fjogjajr27rhosjeq52rrg2gq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

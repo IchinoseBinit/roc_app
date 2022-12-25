@@ -2,17 +2,18 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:roc_app/screens/navigation/navigation_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:roc_app/providers/user_provider.dart';
 import 'package:roc_app/theme/theme_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '/constants/constants.dart';
 import '/screens/auth/login_screen.dart';
 import '/utils/preferences_helper.dart';
-import '/constants/constants.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
+  await Firebase.initializeApp();
   PreferencesHelper.prefs = await SharedPreferences.getInstance();
   runApp(const MyApp());
 }
@@ -43,19 +44,26 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return MaterialApp(
-          title: 'ROC App',
-          debugShowCheckedModeBanner: false,
-          navigatorKey: navigatorKey,
-          builder: (context, child) => MediaQuery(
-            data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-            child: GestureDetector(
-              onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-              child: child!,
+        return MultiProvider(
+          providers: [
+            ChangeNotifierProvider(
+              create: (_) => UserProvider(),
             ),
+          ],
+          child: MaterialApp(
+            title: 'ROC App',
+            debugShowCheckedModeBanner: false,
+            navigatorKey: navigatorKey,
+            builder: (context, child) => MediaQuery(
+              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+              child: GestureDetector(
+                onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+                child: child!,
+              ),
+            ),
+            theme: lightTheme(context),
+            home: LoginScreen(),
           ),
-          theme: lightTheme(context),
-          home: NavigationScreen(),
         );
       },
     );

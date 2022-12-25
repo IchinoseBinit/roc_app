@@ -134,21 +134,21 @@ class RegisterScreen extends StatelessWidget {
   submit(context) async {
     try {
       if (formKey.currentState!.validate()) {
-        // final firebaseAuth = FirebaseAuth.instance;
-        // GeneralAlertDialog().customLoadingDialog(context);
-        // final credential = await firebaseAuth.createUserWithEmailAndPassword(
-        //     email: emailController.text, password: passwordController.text);
-        // if (credential.user?.uid != null) {
-        //   Navigator.pop(context);
-        //   navigate(
-        //     context,
-        //     RegisterProfileScreen(
-        //       uuid: credential.user!.uid,
-        //       email: credential.user!.email!,
-        //     ),
-        //   );
-        // }
-        navigate(context, NavigationScreen());
+        final firebaseAuth = FirebaseAuth.instance;
+        GeneralAlertDialog().customLoadingDialog(context);
+        final credential = await firebaseAuth.createUserWithEmailAndPassword(
+            email: emailController.text, password: passwordController.text);
+        if (credential.user?.uid != null) {
+          Navigator.pop(context);
+          // navigate(
+          //   context,
+          //   RegisterProfileScreen(
+          //     uuid: credential.user!.uid,
+          //     email: credential.user!.email!,
+          //   ),
+          // );
+          navigate(context, NavigationScreen());
+        }
       }
     } on FirebaseAuthException catch (ex) {
       Navigator.pop(context);
@@ -157,6 +157,8 @@ class RegisterScreen extends StatelessWidget {
         message = "The email address is already used";
       } else if (ex.code == "weak-password") {
         message = "The password is too weak";
+      } else {
+        message = ex.message ?? "";
       }
       await GeneralAlertDialog().customAlertDialog(context, message);
     } catch (ex) {

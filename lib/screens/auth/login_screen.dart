@@ -1,6 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import 'package:roc_app/models/firebase_user.dart';
+import 'package:roc_app/providers/user_provider.dart';
 import 'package:roc_app/widgets/body_template.dart';
 
 import '/constants/constants.dart';
@@ -134,30 +138,30 @@ class LoginScreen extends StatelessWidget {
       if (!formKey.currentState!.validate()) {
         return;
       }
-      // final firebaseAuth = FirebaseAuth.instance;
-      // GeneralAlertDialog().customLoadingDialog(context);
-      // final userCredential = await firebaseAuth.signInWithEmailAndPassword(
-      //     email: emailController.text, password: passwordController.text);
-      // final user = userCredential.user;
-      // if (user != null) {
-      //   final firestore = FirebaseFirestore.instance;
-      //   final data = await firestore
-      //       .collection(UserConstants.userCollection)
-      //       .where(UserConstants.userId, isEqualTo: user.uid)
-      //       .get();
-      //   var map = {};
-      //   if (data.docs.isEmpty) {
-      //     map = FirebaseUser(
-      //       displayName: user.displayName,
-      //       email: user.email,
-      //       photoUrl: user.photoURL,
-      //       uuid: user.uid,
-      //     ).toJson();
-      //   } else {
-      //     map = data.docs.first.data();
-      //   }
-      //   Provider.of<UserProvider>(context, listen: false).setUser(map);
-      // }
+      final firebaseAuth = FirebaseAuth.instance;
+      GeneralAlertDialog().customLoadingDialog(context);
+      final userCredential = await firebaseAuth.signInWithEmailAndPassword(
+          email: emailController.text, password: passwordController.text);
+      final user = userCredential.user;
+      if (user != null) {
+        final firestore = FirebaseFirestore.instance;
+        final data = await firestore
+            .collection(UserConstants.userCollection)
+            .where(UserConstants.userId, isEqualTo: user.uid)
+            .get();
+        var map = {};
+        if (data.docs.isEmpty) {
+          map = FirebaseUser(
+            displayName: user.displayName,
+            email: user.email,
+            photoUrl: user.photoURL,
+            uuid: user.uid,
+          ).toJson();
+        } else {
+          map = data.docs.first.data();
+        }
+        Provider.of<UserProvider>(context, listen: false).setUser(map);
+      }
       Navigator.pop(context);
       navigateAndRemoveAll(context, NavigationScreen());
       // TODO: Navigated
@@ -168,6 +172,8 @@ class LoginScreen extends StatelessWidget {
         message = "The password is incorrect";
       } else if (ex.code == "user-not-found") {
         message = "The user is not registered";
+      } else {
+        message = ex.message ?? "";
       }
       await GeneralAlertDialog().customAlertDialog(context, message);
     } catch (ex) {
