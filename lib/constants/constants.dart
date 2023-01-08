@@ -24,7 +24,7 @@ class ImageConstants {
   static const _basePath = "assets/images";
   static const logo = "$_basePath/logo.png";
   static const logoWithName = "$_basePath/logo_with_name.png";
-  static const pdfDownload = "$_basePath/pdf_download.png";
+  static const hospital = "$_basePath/hospital.png";
 
   static const notificationIcon = "notification";
 }
@@ -37,6 +37,14 @@ class UserConstants {
 
 class BloodMarkConstant {
   static const bloodMarkCollection = "blood-mark";
+}
+
+class EducationalResourceConstant {
+  static const resource = "resource";
+}
+
+class NoteConstant {
+  static const notes = "notes";
 }
 
 class ContactUsConstant {
@@ -53,6 +61,14 @@ class DonationConstant {
 
 class SymptomConstant {
   static const symptomCollection = "symptom";
+}
+
+class LogSymptomConstant {
+  static const logSymptomCollection = "log-symptom";
+}
+
+class BookAppointmentConstant {
+  static const appointment = "appointment";
 }
 
 class FilterOptionConstant {

@@ -21,7 +21,6 @@ class MessageListScreen extends StatelessWidget {
             children: [
               const HeaderTemplate(
                 headerText: "List of Messages",
-                needBackButton: false,
               ),
               SizedBox(
                 height: 24.h,

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:roc_app/constants/constants.dart';
-import 'package:roc_app/models/donation.dart';
-import 'package:roc_app/utils/firebase_helper.dart';
+import 'package:roc_app/models/blood_mark.dart';
 
+import '/constants/constants.dart';
+import '/utils/firebase_helper.dart';
+import '/utils/util.dart';
 import '/widgets/body_template.dart';
 import '/widgets/header_template.dart';
 
-class DonationListScreen extends StatelessWidget {
-  const DonationListScreen({super.key});
+class BloodMarkListScreen extends StatelessWidget {
+  const BloodMarkListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,22 +19,25 @@ class DonationListScreen extends StatelessWidget {
           child: Column(
             children: [
               const HeaderTemplate(
-                headerText: "List of Donations",
+                headerText: "List of Blood Marks",
               ),
               SizedBox(
                 height: 24.h,
               ),
               StreamBuilder(
-                stream: FirebaseHelper().getStream(
-                    collectionId: DonationConstant.donationCollection),
+                stream: FirebaseHelper().getStreamWithWhere(
+                  collectionId: BloodMarkConstant.bloodMarkCollection,
+                  whereId: UserConstants.userId,
+                  whereValue: getUserId(),
+                ),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator.adaptive();
                   }
                   final data = snapshot.data;
-                  if (data?.docs == null && data!.docs.isNotEmpty) {
-                    final donations = data.docs
-                        .map((e) => Donation.fromMap(e.data()))
+                  if (data?.docs != null && data!.docs.isNotEmpty) {
+                    final bloodMarks = data.docs
+                        .map((e) => BloodMark.fromMap(e.data()))
                         .toList();
                     return ListView.separated(
                       itemBuilder: (_, index) => Card(
@@ -49,31 +53,30 @@ class DonationListScreen extends StatelessWidget {
                             leading: CircleAvatar(
                               backgroundColor: Colors.grey.shade300,
                               child: const Icon(
-                                Icons.person_outlined,
+                                Icons.info_outline,
                               ),
                             ),
                             title: Text(
-                              donations[index].name,
+                              bloodMarks[index].date,
                             ),
                             subtitle: Text(
-                              donations[index].amount.toStringAsFixed(2),
+                              "Protien: ${bloodMarks[index].amountOfProtien}",
                             ),
                             trailing: Text(
-                              donations[index].date,
-                            ),
+                                "Range: ${bloodMarks[index].referenceRange.toString()}"),
                           ),
                         ),
                       ),
                       separatorBuilder: (_, __) => SizedBox(
                         height: 8.h,
                       ),
-                      itemCount: donations.length,
+                      itemCount: bloodMarks.length,
                       shrinkWrap: true,
                       primary: false,
                     );
                   }
                   return const Center(
-                    child: Text("No Donation made till now"),
+                    child: Text("No Blood Marks saved till now"),
                   );
                 },
               ),

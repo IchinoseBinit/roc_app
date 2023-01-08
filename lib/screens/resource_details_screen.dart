@@ -1,42 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:roc_app/models/doctor.dart';
-import 'package:roc_app/screens/forms/book_appointment_screen.dart';
-import 'package:roc_app/utils/navigate.dart';
-import '/widgets/general_elevated_button.dart';
+import 'package:roc_app/models/educational_resources.dart';
+import 'package:roc_app/screens/forms/add_educational_resources_screen.dart';
+import 'package:roc_app/utils/util.dart';
 
+import '/models/doctor.dart';
+import '/screens/forms/book_appointment_screen.dart';
+import '/utils/navigate.dart';
 import '/widgets/body_template.dart';
+import '/widgets/general_elevated_button.dart';
 import '/widgets/header_template.dart';
 
-class DoctorDetailsScreen extends StatelessWidget {
-  const DoctorDetailsScreen({super.key, required this.doctor});
+class EducationalResourceDetailsScreen extends StatelessWidget {
+  const EducationalResourceDetailsScreen({super.key, required this.resource});
 
-  final Doctor doctor;
+  final EducationalResource resource;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: isAdmin(context)
+          ? Padding(
+              padding: const EdgeInsets.only(bottom: 16.0),
+              child: GeneralElevatedButton(
+                title: "Edit",
+                marginH: 16,
+                onPressed: () => navigate(
+                  context,
+                  AddEducationalResourcesScreen(
+                    resource: resource,
+                  ),
+                ),
+              ),
+            )
+          : null,
       body: SafeArea(
         child: BodyTemplate(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const HeaderTemplate(headerText: "Doctor Details"),
+              HeaderTemplate(headerText: resource.title),
               SizedBox(
                 height: 24.h,
               ),
-              DoctorBody(doctor: doctor),
+              Text(resource.description),
               SizedBox(
                 height: 32.h,
-              ),
-              GeneralElevatedButton(
-                title: "Book Appointment",
-                onPressed: () => navigate(
-                  context,
-                  BookAppointmentScreen(
-                    doctor: doctor,
-                  ),
-                ),
               ),
             ],
           ),

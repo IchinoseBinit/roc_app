@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:roc_app/constants/constants.dart';
-import 'package:roc_app/models/donation.dart';
-import 'package:roc_app/utils/firebase_helper.dart';
+import 'package:roc_app/screens/list_screens/log_symptom_detail_screen.dart';
+import 'package:roc_app/utils/navigate.dart';
 
+import '/constants/constants.dart';
+import '/models/log_symptom.dart';
+import '/utils/firebase_helper.dart';
+import '/utils/util.dart';
 import '/widgets/body_template.dart';
 import '/widgets/header_template.dart';
 
-class DonationListScreen extends StatelessWidget {
-  const DonationListScreen({super.key});
+class LogSymptomsListScreen extends StatelessWidget {
+  const LogSymptomsListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,22 +21,28 @@ class DonationListScreen extends StatelessWidget {
           child: Column(
             children: [
               const HeaderTemplate(
-                headerText: "List of Donations",
+                headerText: "List of Logs",
               ),
               SizedBox(
                 height: 24.h,
               ),
               StreamBuilder(
-                stream: FirebaseHelper().getStream(
-                    collectionId: DonationConstant.donationCollection),
+                stream: isAdmin(context)
+                    ? FirebaseHelper().getStream(
+                        collectionId: LogSymptomConstant.logSymptomCollection)
+                    : FirebaseHelper().getStreamWithWhere(
+                        collectionId: LogSymptomConstant.logSymptomCollection,
+                        whereId: UserConstants.userId,
+                        whereValue: getUserId(),
+                      ),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator.adaptive();
                   }
                   final data = snapshot.data;
-                  if (data?.docs == null && data!.docs.isNotEmpty) {
-                    final donations = data.docs
-                        .map((e) => Donation.fromMap(e.data()))
+                  if (data?.docs != null && data!.docs.isNotEmpty) {
+                    final loggedSymptoms = data.docs
+                        .map((e) => LogSymptom.fromMap(e.data()))
                         .toList();
                     return ListView.separated(
                       itemBuilder: (_, index) => Card(
@@ -49,17 +58,23 @@ class DonationListScreen extends StatelessWidget {
                             leading: CircleAvatar(
                               backgroundColor: Colors.grey.shade300,
                               child: const Icon(
-                                Icons.person_outlined,
+                                Icons.info_outline,
                               ),
                             ),
                             title: Text(
-                              donations[index].name,
+                              loggedSymptoms[index].date,
                             ),
                             subtitle: Text(
-                              donations[index].amount.toStringAsFixed(2),
+                              loggedSymptoms[index].time,
                             ),
-                            trailing: Text(
-                              donations[index].date,
+                            trailing: IconButton(
+                              onPressed: () => navigate(
+                                context,
+                                LogSymptomDetailScreen(
+                                  logSymptom: loggedSymptoms[index],
+                                ),
+                              ),
+                              icon: const Icon(Icons.arrow_forward_ios),
                             ),
                           ),
                         ),
@@ -67,13 +82,13 @@ class DonationListScreen extends StatelessWidget {
                       separatorBuilder: (_, __) => SizedBox(
                         height: 8.h,
                       ),
-                      itemCount: donations.length,
+                      itemCount: loggedSymptoms.length,
                       shrinkWrap: true,
                       primary: false,
                     );
                   }
                   return const Center(
-                    child: Text("No Donation made till now"),
+                    child: Text("No symptoms logged till now"),
                   );
                 },
               ),

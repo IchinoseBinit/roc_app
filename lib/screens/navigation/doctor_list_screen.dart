@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:roc_app/constants/constants.dart';
 import 'package:roc_app/models/doctor.dart';
 import 'package:roc_app/screens/forms/add_doctor_screen.dart';
+import 'package:roc_app/screens/forms/book_appointment_screen.dart';
 import 'package:roc_app/utils/firebase_helper.dart';
 import 'package:roc_app/utils/util.dart';
 import 'package:roc_app/widgets/general_elevated_button.dart';
@@ -54,8 +55,9 @@ class DoctorListScreen extends StatelessWidget {
                       child: Text("No Doctors"),
                     );
                   }
-                  final doctors =
-                      data!.docs.map((e) => Doctor.fromMap(e.data())).toList();
+                  final doctors = data!.docs
+                      .map((e) => Doctor.fromMap(e.data(), e.id))
+                      .toList();
                   return ListView.separated(
                     itemBuilder: (_, index) => Card(
                       shape: RoundedRectangleBorder(
@@ -80,7 +82,12 @@ class DoctorListScreen extends StatelessWidget {
                             doctors[index].qualification,
                           ),
                           trailing: InkWell(
-                            onTap: () {},
+                            onTap: () => navigate(
+                              context,
+                              BookAppointmentScreen(
+                                doctor: doctors[index],
+                              ),
+                            ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: const [

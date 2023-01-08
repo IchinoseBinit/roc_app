@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:roc_app/models/contact_us.dart';
-import 'package:roc_app/models/doctor.dart';
 
 import '/widgets/body_template.dart';
-import '/widgets/general_elevated_button.dart';
 import '/widgets/header_template.dart';
 
 class MessageDetailsScreen extends StatelessWidget {
