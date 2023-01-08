@@ -204,7 +204,7 @@ class _SliderWidgetState extends State<SliderWidget> {
             borderRadius: BorderRadius.circular(
               50,
             ),
-            color: Colors.pinkAccent.withOpacity(.4),
+            color: Colors.white.withOpacity(.4),
           ),
           child: Slider(
             value: value,
