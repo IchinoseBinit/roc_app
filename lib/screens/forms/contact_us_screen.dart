@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:roc_app/constants/constants.dart';
+import 'package:roc_app/models/contact_us.dart';
+import 'package:roc_app/utils/firebase_helper.dart';
+import 'package:roc_app/utils/show_toast_message.dart';
+import 'package:roc_app/utils/util.dart';
+import 'package:roc_app/widgets/custom_loading_indicator.dart';
+import 'package:roc_app/widgets/general_alert_dialog.dart';
 import '/utils/validation_mixin.dart';
 import '/widgets/body_template.dart';
 import '/widgets/general_elevated_button.dart';
@@ -82,7 +89,29 @@ class ContactUsScreen extends StatelessWidget {
               ),
               GeneralElevatedButton(
                 title: "Submit",
-                onPressed: () {},
+                onPressed: () async {
+                  try {
+                    onLoading(context);
+                    final contactUs = ContactUs(
+                      name: getText(nameController),
+                      email: getText(emailController),
+                      subject: getText(subjectController),
+                      message: getText(messageController),
+                    ).toJson();
+                    await FirebaseHelper().addData(
+                      context,
+                      map: contactUs,
+                      collectionId: ContactUsConstant.contactUsCollection,
+                    );
+                    showToast("Message sent successfully");
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  } catch (ex) {
+                    Navigator.pop(context);
+                    await GeneralAlertDialog()
+                        .customAlertDialog(context, ex.toString());
+                  }
+                },
               ),
             ],
           ),

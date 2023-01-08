@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:roc_app/constants/constants.dart';
+import 'package:roc_app/models/symptom.dart';
+import 'package:roc_app/utils/firebase_helper.dart';
+import 'package:roc_app/utils/show_toast_message.dart';
+import 'package:roc_app/utils/util.dart';
+import 'package:roc_app/widgets/custom_loading_indicator.dart';
+import 'package:roc_app/widgets/general_alert_dialog.dart';
 import '/utils/validation_mixin.dart';
 import '/widgets/body_template.dart';
 import '/widgets/general_elevated_button.dart';
@@ -79,7 +85,28 @@ class AddSymptomsScreen extends StatelessWidget {
               ),
               GeneralElevatedButton(
                 title: "Save",
-                onPressed: () {},
+                onPressed: () async {
+                  try {
+                    onLoading(context);
+                    final symptom = Symptom(
+                      symptom: getText(symptomController),
+                      date: getText(dateController),
+                      rate: int.parse(getText(symptomRangeController)),
+                    ).toJson();
+                    await FirebaseHelper().addData(
+                      context,
+                      map: symptom,
+                      collectionId: SymptomConstant.symptomCollection,
+                    );
+                    showToast("Symptom added Successfully");
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  } catch (ex) {
+                    Navigator.pop(context);
+                    await GeneralAlertDialog()
+                        .customAlertDialog(context, ex.toString());
+                  }
+                },
               ),
             ],
           ),

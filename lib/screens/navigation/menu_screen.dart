@@ -1,5 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import 'package:roc_app/providers/user_provider.dart';
+import 'package:roc_app/screens/admin_screens/donation_list_screen.dart';
+import 'package:roc_app/screens/admin_screens/message_list_screen.dart';
+import 'package:roc_app/screens/auth/login_screen.dart';
+import 'package:roc_app/utils/firebase_helper.dart';
+import 'package:roc_app/utils/show_toast_message.dart';
+import 'package:roc_app/utils/util.dart';
+import 'package:roc_app/widgets/custom_loading_indicator.dart';
 import '/screens/about_us_screen.dart';
 import '/screens/forms/add_blood_mark_screen.dart';
 import '/screens/forms/contact_us_screen.dart';
@@ -28,7 +37,15 @@ class MenuScreen extends StatelessWidget {
               Card(
                 child: ListTile(
                   title: const Text("Donation"),
-                  onTap: () => navigate(context, DonationScreen()),
+                  onTap: () => navigate(
+                      context,
+                      isAdmin(context)
+                          ? const DonationListScreen()
+                          : DonationScreen()),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 18.h,
+                  ),
                 ),
               ),
               SizedBox(
@@ -38,6 +55,10 @@ class MenuScreen extends StatelessWidget {
                 child: ListTile(
                   title: const Text("About Us"),
                   onTap: () => navigate(context, const AboutUsScreen()),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 18.h,
+                  ),
                 ),
               ),
               SizedBox(
@@ -46,20 +67,52 @@ class MenuScreen extends StatelessWidget {
               Card(
                 child: ListTile(
                   title: const Text("Contact Us"),
-                  onTap: () => navigate(context, ContactUsScreen()),
+                  onTap: () => navigate(
+                    context,
+                    isAdmin(context)
+                        ? const MessageListScreen()
+                        : ContactUsScreen(),
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 18.h,
+                  ),
                 ),
               ),
               SizedBox(
                 height: 8.h,
               ),
+              if (!isAdmin(context)) ...[
+                Card(
+                  child: ListTile(
+                    title: const Text("Blood Mark"),
+                    onTap: () => navigate(context, AddBloodMarkScreen()),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios,
+                      size: 18.h,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 8.h,
+                ),
+              ],
               Card(
                 child: ListTile(
-                  title: const Text("Blood Mark"),
-                  onTap: () => navigate(context, AddBloodMarkScreen()),
+                  trailing: const Icon(
+                    Icons.logout_outlined,
+                    color: Colors.red,
+                  ),
+                  title: const Text("Logout"),
+                  onTap: () async {
+                    onLoading(context);
+                    await Provider.of<UserProvider>(context, listen: false)
+                        .logout();
+                    Navigator.pop(context);
+                    showToast("Logged out Successfully");
+                    navigateAndRemoveAll(context, LoginScreen());
+                  },
                 ),
-              ),
-              SizedBox(
-                height: 8.h,
               ),
             ],
           ),

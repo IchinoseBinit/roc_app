@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:roc_app/models/firebase_user.dart';
 import 'package:roc_app/providers/user_provider.dart';
+import 'package:roc_app/screens/auth/register_profile_screen.dart';
 import 'package:roc_app/widgets/body_template.dart';
 
 import '/constants/constants.dart';
@@ -151,12 +154,9 @@ class LoginScreen extends StatelessWidget {
             .get();
         var map = {};
         if (data.docs.isEmpty) {
-          map = FirebaseUser(
-            displayName: user.displayName,
-            email: user.email,
-            photoUrl: user.photoURL,
-            uuid: user.uid,
-          ).toJson();
+          navigateAndRemoveAll(context,
+              RegisterProfileScreen(uuid: user.uid, email: user.email ?? ""));
+          return;
         } else {
           map = data.docs.first.data();
         }
@@ -164,7 +164,6 @@ class LoginScreen extends StatelessWidget {
       }
       Navigator.pop(context);
       navigateAndRemoveAll(context, NavigationScreen());
-      // TODO: Navigated
     } on FirebaseAuthException catch (ex) {
       Navigator.pop(context);
       var message = "";

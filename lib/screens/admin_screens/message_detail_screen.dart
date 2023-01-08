@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:roc_app/models/contact_us.dart';
 import 'package:roc_app/models/doctor.dart';
-import '/widgets/general_elevated_button.dart';
 
 import '/widgets/body_template.dart';
+import '/widgets/general_elevated_button.dart';
 import '/widgets/header_template.dart';
 
-class DoctorDetailsScreen extends StatelessWidget {
-  const DoctorDetailsScreen({super.key, required this.doctor});
+class MessageDetailsScreen extends StatelessWidget {
+  const MessageDetailsScreen({super.key, required this.contactUs});
 
-  final Doctor doctor;
+  final ContactUs contactUs;
 
   @override
   Widget build(BuildContext context) {
@@ -19,31 +20,19 @@ class DoctorDetailsScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const HeaderTemplate(headerText: "Doctor Details"),
+              HeaderTemplate(headerText: contactUs.subject),
               SizedBox(
                 height: 24.h,
               ),
-              getText(context, title: "Name", value: doctor.name),
+              getText(context, title: "Message", value: contactUs.message),
               SizedBox(
                 height: 16.h,
               ),
-              getText(context, title: "Address", value: doctor.address),
+              getText(context, title: "Name", value: contactUs.name),
               SizedBox(
                 height: 16.h,
               ),
-              getText(context,
-                  title: "Qualification", value: doctor.qualification),
-              SizedBox(
-                height: 16.h,
-              ),
-              getText(context, title: "Experience", value: doctor.experience),
-              SizedBox(
-                height: 32.h,
-              ),
-              GeneralElevatedButton(
-                title: "Book Appointment",
-                onPressed: () {},
-              ),
+              getText(context, title: "Email", value: contactUs.email),
             ],
           ),
         ),

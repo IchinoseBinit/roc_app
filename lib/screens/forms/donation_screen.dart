@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:roc_app/constants/constants.dart';
+import 'package:roc_app/models/donation.dart';
+import 'package:roc_app/utils/firebase_helper.dart';
+import 'package:roc_app/utils/show_toast_message.dart';
+import 'package:roc_app/utils/util.dart';
+import 'package:roc_app/widgets/custom_loading_indicator.dart';
+import 'package:roc_app/widgets/general_alert_dialog.dart';
 import '/utils/validation_mixin.dart';
 import '/widgets/body_template.dart';
 import '/widgets/general_elevated_button.dart';
@@ -117,8 +124,31 @@ class DonationScreen extends StatelessWidget {
                 ),
                 GeneralElevatedButton(
                   title: "Submit",
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {}
+                  onPressed: () async {
+                    if (formKey.currentState!.validate()) {
+                      try {
+                        onLoading(context);
+                        final donation = Donation(
+                          name: getText(fullNameController),
+                          amount: double.parse(getText(amountController)),
+                          cardNumber: int.parse(getText(cardNumberController)),
+                          date: getText(expiryDateController),
+                          cvv: int.parse(getText(cvvController)),
+                        ).toJson();
+                        await FirebaseHelper().addData(
+                          context,
+                          map: donation,
+                          collectionId: DonationConstant.donationCollection,
+                        );
+                        showToast("Donated Successfully");
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      } catch (ex) {
+                        Navigator.pop(context);
+                        await GeneralAlertDialog()
+                            .customAlertDialog(context, ex.toString());
+                      }
+                    }
                   },
                 ),
               ],

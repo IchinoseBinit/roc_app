@@ -142,14 +142,14 @@ class RegisterScreen extends StatelessWidget {
             email: emailController.text, password: passwordController.text);
         if (credential.user?.uid != null) {
           Navigator.pop(context);
-          // navigate(
-          //   context,
-          //   RegisterProfileScreen(
-          //     uuid: credential.user!.uid,
-          //     email: credential.user!.email!,
-          //   ),
-          // );
-          navigate(context, NavigationScreen());
+          navigate(
+            context,
+            RegisterProfileScreen(
+              uuid: credential.user!.uid,
+              email: credential.user!.email!,
+            ),
+          );
+          // navigate(context, NavigationScreen());
         }
       }
     } on FirebaseAuthException catch (ex) {

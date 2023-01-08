@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:roc_app/constants/constants.dart';
+import 'package:roc_app/models/doctor.dart';
+import 'package:roc_app/utils/firebase_helper.dart';
+import 'package:roc_app/utils/show_toast_message.dart';
+import 'package:roc_app/utils/util.dart';
+import 'package:roc_app/widgets/custom_loading_indicator.dart';
+import 'package:roc_app/widgets/general_alert_dialog.dart';
 import '/utils/validation_mixin.dart';
 import '/widgets/body_template.dart';
 import '/widgets/general_elevated_button.dart';
@@ -79,7 +86,7 @@ class AddDoctorScreen extends StatelessWidget {
                 controller: reviewController,
                 obscureText: false,
                 maxLines: 5,
-                textInputType: TextInputType.text,
+                textInputType: TextInputType.multiline,
                 validate: (v) => ValidationMixin().validate(v, title: "Review"),
                 textInputAction: TextInputAction.newline,
               ),
@@ -88,7 +95,30 @@ class AddDoctorScreen extends StatelessWidget {
               ),
               GeneralElevatedButton(
                 title: "Submit",
-                onPressed: () {},
+                onPressed: () async {
+                  try {
+                    onLoading(context);
+                    final doctor = Doctor(
+                      name: getText(fullNameController),
+                      address: getText(addressController),
+                      qualification: getText(qualificationController),
+                      experience: getText(experienceController),
+                      review: getText(reviewController),
+                    ).toJson();
+                    await FirebaseHelper().addData(
+                      context,
+                      map: doctor,
+                      collectionId: DoctorConstant.doctorCollection,
+                    );
+                    showToast("Doctor added Successfully");
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  } catch (ex) {
+                    Navigator.pop(context);
+                    await GeneralAlertDialog()
+                        .customAlertDialog(context, ex.toString());
+                  }
+                },
               ),
             ],
           ),

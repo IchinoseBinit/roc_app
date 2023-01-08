@@ -35,26 +35,24 @@ class UserConstants {
   static const apiKey = "b9ac8db19381c1b4c97e33a3540d1954";
 }
 
-class UtilitiesPriceConstant {
-  static const utilityPriceCollection = "utilities-price";
-  static const userId = "uuid";
+class BloodMarkConstant {
+  static const bloodMarkCollection = "blood-mark";
 }
 
-class FoodConstant {
-  static const foodCollection = "food";
-  static const isAvailable = "isAvailable";
-  static const title = "name";
-  static const userId = "uuid";
-  static const postedBy = "postedBy";
+class ContactUsConstant {
+  static const contactUsCollection = "contact-us";
 }
 
-class FoodTruckConstant {
-  static const truckCollection = "foodTruck";
+class DoctorConstant {
+  static const doctorCollection = "doctor";
 }
 
-class RoomRentConstant {
-  static const roomRentCollection = "room-rent";
-  static const roomId = "roomId";
+class DonationConstant {
+  static const donationCollection = "donation";
+}
+
+class SymptomConstant {
+  static const symptomCollection = "symptom";
 }
 
 class FilterOptionConstant {

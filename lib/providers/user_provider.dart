@@ -1,8 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/cupertino.dart';
+
 import '/models/user.dart';
 
 class UserProvider extends ChangeNotifier {
   late User _user;
+
+  bool getIsAdmin() {
+    return _user.isAdmin;
+  }
 
   setUser(Map obj) {
     _user = User.fromJson(obj);
@@ -17,8 +23,7 @@ class UserProvider extends ChangeNotifier {
     required String name,
     required String address,
     required String phoneNumber,
-    String? panNumber,
-    required bool isFoodDonor,
+    required bool isAdmin,
   }) {
     _user = User(
       uuid: uuid,
@@ -26,8 +31,7 @@ class UserProvider extends ChangeNotifier {
       name: name,
       address: address,
       phoneNumber: phoneNumber,
-      isFoodDonor: isFoodDonor,
-      panNumber: panNumber,
+      isAdmin: isAdmin,
       image: null,
       photoUrl: null,
     );
@@ -41,7 +45,7 @@ class UserProvider extends ChangeNotifier {
     required String address,
     required String phoneNumber,
     String? panNumber,
-    required bool isFoodDonor,
+    required bool isAdmin,
   }) {
     _user = User(
       uuid: _user.uuid,
@@ -49,8 +53,7 @@ class UserProvider extends ChangeNotifier {
       name: name,
       address: address,
       phoneNumber: phoneNumber,
-      isFoodDonor: isFoodDonor,
-      panNumber: panNumber,
+      isAdmin: isAdmin,
       image: _user.tempImage,
       photoUrl: null,
     );
@@ -64,5 +67,7 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  logout() {}
+  logout() async {
+    await auth.FirebaseAuth.instance.signOut();
+  }
 }
