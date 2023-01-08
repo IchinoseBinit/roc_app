@@ -90,7 +90,7 @@ class AppointmentsListScreen extends StatelessWidget {
                     );
                   }
                   return const Center(
-                    child: Text("No symptoms logged till now"),
+                    child: Text("No appointments booked till now"),
                   );
                 },
               ),

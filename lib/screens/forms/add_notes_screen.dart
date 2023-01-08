@@ -43,7 +43,8 @@ class AddNotesScreen extends StatelessWidget {
                 labelText: "Note",
                 controller: messageController,
                 obscureText: false,
-                textInputType: TextInputType.text,
+                maxLines: 5,
+                textInputType: TextInputType.multiline,
                 validate: (v) => ValidationMixin().validate(v, title: "Note"),
                 textInputAction: TextInputAction.next,
               ),
@@ -61,18 +62,25 @@ class AddNotesScreen extends StatelessWidget {
                         message: getText(messageController),
                         userId: getUserId(),
                       ).toJson();
+                      await FirebaseHelper().addData(
+                        context,
+                        map: map,
+                        collectionId: NoteConstant.notes,
+                      );
                     } else {
                       map = Note(
                         message: getText(messageController),
                         userId: note!.userId,
                         id: note!.id,
                       ).toJson();
+                      await FirebaseHelper().updateData(
+                        context,
+                        map: map,
+                        collectionId: NoteConstant.notes,
+                        docId: note!.id!,
+                      );
                     }
-                    await FirebaseHelper().addData(
-                      context,
-                      map: map,
-                      collectionId: NoteConstant.notes,
-                    );
+
                     showToast(
                         "Note ${note == null ? 'added' : 'updated'} successfully");
                     Navigator.pop(context);

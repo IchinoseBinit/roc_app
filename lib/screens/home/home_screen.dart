@@ -28,7 +28,7 @@ class HomeScreen extends StatelessWidget {
               SizedBox(
                 height: 24.h,
               ),
-              Container(
+              SizedBox(
                 height: 235.h,
                 // decoration: BoxDecoration(
                 //   borderRadius: BorderRadius.circular(12.r),
@@ -69,13 +69,13 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 40.h,
-                ),
-                CurvedButton(
-                  title: "Upload Medical Report",
-                  onTap: () {},
-                )
+                // SizedBox(
+                //   height: 40.h,
+                // ),
+                // CurvedButton(
+                //   title: "Upload Medical Report",
+                //   onTap: () {},
+                // )
               ]
             ],
           ),

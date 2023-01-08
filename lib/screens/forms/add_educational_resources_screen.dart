@@ -76,18 +76,25 @@ class AddEducationalResourcesScreen extends StatelessWidget {
                         title: getText(titleController),
                         description: getText(descriptionController),
                       ).toJson();
+                      await FirebaseHelper().addData(
+                        context,
+                        map: map,
+                        collectionId: EducationalResourceConstant.resource,
+                      );
                     } else {
                       map = EducationalResource(
                         title: getText(titleController),
                         description: getText(descriptionController),
                         id: resource!.id,
                       ).toJson();
+                      await FirebaseHelper().updateData(
+                        context,
+                        map: map,
+                        docId: resource!.id!,
+                        collectionId: EducationalResourceConstant.resource,
+                      );
                     }
-                    await FirebaseHelper().addData(
-                      context,
-                      map: map,
-                      collectionId: EducationalResourceConstant.resource,
-                    );
+
                     showToast(
                         "Educational Resource ${resource == null ? 'added' : 'updated'} successfully");
                     Navigator.pop(context);

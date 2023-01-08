@@ -45,6 +45,7 @@ class EducationalResourceConstant {
 
 class NoteConstant {
   static const notes = "notes";
+  static const userId = "userId";
 }
 
 class ContactUsConstant {
