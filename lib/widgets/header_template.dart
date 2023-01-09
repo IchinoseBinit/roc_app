@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 import '/constants/constants.dart';
 
 class HeaderTemplate extends StatelessWidget {
-  const HeaderTemplate(
-      {super.key, required this.headerText, this.needBackButton = true});
+  const HeaderTemplate({
+    super.key,
+    this.headerText,
+    this.needBackButton = true,
+  });
 
-  final String headerText;
+  final String? headerText;
   final bool needBackButton;
 
   @override
@@ -43,15 +48,20 @@ class HeaderTemplate extends StatelessWidget {
               ),
           ],
         ),
-        SizedBox(
-          height: 40.h,
-        ),
-        Center(
-          child: Text(
-            headerText,
-            style: Theme.of(context).textTheme.headline1,
+        if (headerText != null) ...[
+          SizedBox(
+            height: 40.h,
           ),
-        )
+          Center(
+            child: Text(
+              headerText!,
+              style: GoogleFonts.inter(
+                fontSize: 32.sp,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ],
       ],
     );
   }

@@ -68,6 +68,10 @@ class LogSymptomConstant {
   static const logSymptomCollection = "log-symptom";
 }
 
+class MedicalDetailsConstant {
+  static const detailsCollection = "medical-details";
+}
+
 class BookAppointmentConstant {
   static const appointment = "appointment";
 }

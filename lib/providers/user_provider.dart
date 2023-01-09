@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/cupertino.dart';
+import 'package:roc_app/constants/constants.dart';
+import 'package:roc_app/utils/firebase_helper.dart';
+import 'package:roc_app/widgets/general_alert_dialog.dart';
 
 import '/models/user.dart';
 
@@ -62,8 +65,20 @@ class UserProvider extends ChangeNotifier {
     return _user.toJson();
   }
 
-  updateUserImage(String image) {
-    _user.tempImage = image;
+  updateUserImage(BuildContext context, String image) async {
+    try {
+      _user.image = image;
+
+      await FirebaseHelper().addOrUpdateContent(
+        context,
+        collectionId: UserConstants.userCollection,
+        whereId: UserConstants.userId,
+        whereValue: user.uuid,
+        map: _user.toJson(),
+      );
+    } catch (ex) {
+      GeneralAlertDialog().customAlertDialog(context, ex.toString());
+    }
     notifyListeners();
   }
 

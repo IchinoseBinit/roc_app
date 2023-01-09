@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:roc_app/models/blood_mark.dart';
+import 'package:roc_app/screens/graphs/blood_mark_graph_screen.dart';
+import 'package:roc_app/utils/navigate.dart';
+import 'package:roc_app/widgets/general_elevated_button.dart';
 
 import '/constants/constants.dart';
 import '/utils/firebase_helper.dart';
@@ -8,12 +11,32 @@ import '/utils/util.dart';
 import '/widgets/body_template.dart';
 import '/widgets/header_template.dart';
 
-class BloodMarkListScreen extends StatelessWidget {
+class BloodMarkListScreen extends StatefulWidget {
   const BloodMarkListScreen({super.key});
 
   @override
+  State<BloodMarkListScreen> createState() => _BloodMarkListScreenState();
+}
+
+class _BloodMarkListScreenState extends State<BloodMarkListScreen> {
+  List<BloodMark> bloodMarkList = [];
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: isAdmin(context)
+          ? null
+          : Padding(
+              padding: EdgeInsets.only(bottom: 16.h),
+              child: GeneralElevatedButton(
+                marginH: 16.h,
+                title: "See Graph",
+                onPressed: () => navigate(
+                    context,
+                    GraphScreen(
+                      marks: bloodMarkList,
+                    )),
+              ),
+            ),
       body: SafeArea(
         child: BodyTemplate(
           child: Column(
@@ -36,9 +59,10 @@ class BloodMarkListScreen extends StatelessWidget {
                   }
                   final data = snapshot.data;
                   if (data?.docs != null && data!.docs.isNotEmpty) {
-                    final bloodMarks = data.docs
+                    bloodMarkList = data.docs
                         .map((e) => BloodMark.fromMap(e.data()))
                         .toList();
+
                     return ListView.separated(
                       itemBuilder: (_, index) => Card(
                         shape: RoundedRectangleBorder(
@@ -57,20 +81,20 @@ class BloodMarkListScreen extends StatelessWidget {
                               ),
                             ),
                             title: Text(
-                              bloodMarks[index].date,
+                              bloodMarkList[index].date,
                             ),
                             subtitle: Text(
-                              "Protien: ${bloodMarks[index].amountOfProtien}",
+                              "Protien: ${bloodMarkList[index].amountOfProtien}",
                             ),
                             trailing: Text(
-                                "Range: ${bloodMarks[index].referenceRange.toString()}"),
+                                "Range: ${bloodMarkList[index].referenceRange.toString()}"),
                           ),
                         ),
                       ),
                       separatorBuilder: (_, __) => SizedBox(
                         height: 8.h,
                       ),
-                      itemCount: bloodMarks.length,
+                      itemCount: bloodMarkList.length,
                       shrinkWrap: true,
                       primary: false,
                     );
