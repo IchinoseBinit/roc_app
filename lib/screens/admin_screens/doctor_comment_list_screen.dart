@@ -1,68 +1,44 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:roc_app/models/blood_mark.dart';
-import 'package:roc_app/screens/graphs/blood_mark_graph_screen.dart';
-import 'package:roc_app/utils/navigate.dart';
-import 'package:roc_app/widgets/general_elevated_button.dart';
+import 'package:intl/intl.dart';
+import 'package:roc_app/constants/constants.dart';
+import 'package:roc_app/models/doctor_comments.dart';
+import 'package:roc_app/models/donation.dart';
+import 'package:roc_app/utils/firebase_helper.dart';
 
-import '/constants/constants.dart';
-import '/utils/firebase_helper.dart';
-import '/utils/util.dart';
 import '/widgets/body_template.dart';
 import '/widgets/header_template.dart';
 
-class BloodMarkListScreen extends StatefulWidget {
-  const BloodMarkListScreen({super.key});
+class DoctorCommentListScreen extends StatelessWidget {
+  const DoctorCommentListScreen({super.key});
 
-  @override
-  State<BloodMarkListScreen> createState() => _BloodMarkListScreenState();
-}
-
-class _BloodMarkListScreenState extends State<BloodMarkListScreen> {
-  List<BloodMark> bloodMarkList = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: isAdmin(context)
-          ? null
-          : Padding(
-              padding: EdgeInsets.only(bottom: 16.h),
-              child: GeneralElevatedButton(
-                marginH: 16.h,
-                title: "See Graph",
-                onPressed: () => navigate(
-                    context,
-                    BloodMarkGraphScreen(
-                      marks: bloodMarkList,
-                    )),
-              ),
-            ),
       body: SafeArea(
         child: BodyTemplate(
           child: Column(
             children: [
               const HeaderTemplate(
-                headerText: "List of Blood Marks",
+                headerText: "List of Comments",
               ),
               SizedBox(
                 height: 24.h,
               ),
               StreamBuilder(
-                stream: FirebaseHelper().getStreamWithWhere(
-                  collectionId: BloodMarkConstant.bloodMarkCollection,
-                  whereId: UserConstants.userId,
-                  whereValue: getUserId(),
-                ),
+                stream: FirebaseHelper()
+                    .getStream(collectionId: DoctorConstant.commentCollection),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator.adaptive();
                   }
                   final data = snapshot.data;
                   if (data?.docs != null && data!.docs.isNotEmpty) {
-                    bloodMarkList = data.docs
-                        .map((e) => BloodMark.fromMap(e.data()))
+                    final doctorComments = data.docs
+                        .map((e) => DoctorComments.fromMap(e.data()))
                         .toList();
-
                     return ListView.separated(
                       itemBuilder: (_, index) => Card(
                         shape: RoundedRectangleBorder(
@@ -76,31 +52,45 @@ class _BloodMarkListScreenState extends State<BloodMarkListScreen> {
                           child: ListTile(
                             leading: CircleAvatar(
                               backgroundColor: Colors.grey.shade300,
-                              child: const Icon(
-                                Icons.info_outline,
-                              ),
+                              child: doctorComments[index].user.image != null &&
+                                      doctorComments[index].user.tempImage ==
+                                          null
+                                  ? Image.memory(
+                                      base64Decode(
+                                          doctorComments[index].user.image ??
+                                              doctorComments[index]
+                                                  .user
+                                                  .tempImage!),
+                                    )
+                                  : const Icon(
+                                      Icons.person_outlined,
+                                    ),
                             ),
                             title: Text(
-                              bloodMarkList[index].date,
+                              doctorComments[index].user.name ?? "",
                             ),
                             subtitle: Text(
-                              "Protien: ${bloodMarkList[index].amountOfProtien}",
+                              doctorComments[index].comment,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                             trailing: Text(
-                                "Range: ${bloodMarkList[index].referenceRange.toString()}"),
+                              DateFormat("yyyy-MM-dd")
+                                  .format(doctorComments[index].dateTime),
+                            ),
                           ),
                         ),
                       ),
                       separatorBuilder: (_, __) => SizedBox(
                         height: 8.h,
                       ),
-                      itemCount: bloodMarkList.length,
+                      itemCount: doctorComments.length,
                       shrinkWrap: true,
                       primary: false,
                     );
                   }
                   return const Center(
-                    child: Text("No Blood Marks saved till now"),
+                    child: Text("No comments made till now"),
                   );
                 },
               ),

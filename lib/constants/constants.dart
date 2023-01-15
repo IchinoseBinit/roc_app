@@ -54,6 +54,7 @@ class ContactUsConstant {
 
 class DoctorConstant {
   static const doctorCollection = "doctor";
+  static const commentCollection = "doctor-comment";
 }
 
 class DonationConstant {
@@ -66,6 +67,7 @@ class SymptomConstant {
 
 class LogSymptomConstant {
   static const logSymptomCollection = "log-symptom";
+  static const userId = "userId";
 }
 
 class MedicalDetailsConstant {

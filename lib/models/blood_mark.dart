@@ -1,7 +1,7 @@
 class BloodMark {
   late String uuid;
-  late int amountOfProtien;
-  late int referenceRange;
+  late double amountOfProtien;
+  late double referenceRange;
   late String date;
 
   BloodMark({
@@ -13,8 +13,8 @@ class BloodMark {
 
   BloodMark.fromMap(Map obj) {
     uuid = obj["uuid"];
-    amountOfProtien = obj["amountOfProtien"];
-    referenceRange = obj["referenceRange"];
+    amountOfProtien = double.parse(obj["amountOfProtien"].toString());
+    referenceRange = double.parse(obj["referenceRange"].toString());
     date = obj["date"];
   }
 

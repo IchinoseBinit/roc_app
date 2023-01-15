@@ -17,6 +17,8 @@ class AddDoctorScreen extends StatelessWidget {
   AddDoctorScreen({super.key});
 
   final fullNameController = TextEditingController();
+  final phoneController = TextEditingController();
+  final emailController = TextEditingController();
   final addressController = TextEditingController();
   final qualificationController = TextEditingController();
   final experienceController = TextEditingController();
@@ -40,6 +42,30 @@ class AddDoctorScreen extends StatelessWidget {
                 textInputType: TextInputType.name,
                 validate: (v) =>
                     ValidationMixin().validate(v, title: "Full Name"),
+                textInputAction: TextInputAction.next,
+              ),
+              SizedBox(
+                height: 12.h,
+              ),
+              GeneralTextField(
+                labelText: "Phone Number",
+                controller: phoneController,
+                obscureText: false,
+                textInputType: TextInputType.number,
+                validate: (v) =>
+                    ValidationMixin().validate(v, title: "Phone Number"),
+                maxLength: 10,
+                textInputAction: TextInputAction.next,
+              ),
+              SizedBox(
+                height: 12.h,
+              ),
+              GeneralTextField(
+                labelText: "Email",
+                controller: emailController,
+                obscureText: false,
+                textInputType: TextInputType.emailAddress,
+                validate: (v) => ValidationMixin().validateEmail(v),
                 textInputAction: TextInputAction.next,
               ),
               SizedBox(
@@ -100,6 +126,8 @@ class AddDoctorScreen extends StatelessWidget {
                     onLoading(context);
                     final doctor = Doctor(
                       name: getText(fullNameController),
+                      phone: getText(phoneController),
+                      email: getText(emailController),
                       address: getText(addressController),
                       qualification: getText(qualificationController),
                       experience: getText(experienceController),

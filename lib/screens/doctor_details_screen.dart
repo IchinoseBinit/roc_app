@@ -60,6 +60,14 @@ class DoctorBody extends StatelessWidget {
         SizedBox(
           height: 16.h,
         ),
+        getText(context, title: "Phone Number", value: doctor.phone),
+        SizedBox(
+          height: 16.h,
+        ),
+        getText(context, title: "Email", value: doctor.email),
+        SizedBox(
+          height: 16.h,
+        ),
         getText(context, title: "Address", value: doctor.address),
         SizedBox(
           height: 16.h,

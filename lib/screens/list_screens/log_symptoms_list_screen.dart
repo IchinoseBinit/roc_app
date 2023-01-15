@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:roc_app/screens/graphs/log_symptoms_graph_screen.dart';
 import 'package:roc_app/screens/list_screens/log_symptom_detail_screen.dart';
 import 'package:roc_app/utils/navigate.dart';
+import 'package:roc_app/widgets/general_elevated_button.dart';
 
 import '/constants/constants.dart';
 import '/models/log_symptom.dart';
@@ -10,12 +12,33 @@ import '/utils/util.dart';
 import '/widgets/body_template.dart';
 import '/widgets/header_template.dart';
 
-class LogSymptomsListScreen extends StatelessWidget {
+class LogSymptomsListScreen extends StatefulWidget {
   const LogSymptomsListScreen({super.key});
+
+  @override
+  State<LogSymptomsListScreen> createState() => _LogSymptomsListScreenState();
+}
+
+class _LogSymptomsListScreenState extends State<LogSymptomsListScreen> {
+  List<LogSymptom> loggedSymptoms = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: isAdmin(context)
+          ? null
+          : Padding(
+              padding: EdgeInsets.only(bottom: 16.h),
+              child: GeneralElevatedButton(
+                marginH: 16.h,
+                title: "See Graph",
+                onPressed: () => navigate(
+                    context,
+                    LogSymptomsGraphScreen(
+                      loggedSymptom: loggedSymptoms,
+                    )),
+              ),
+            ),
       body: SafeArea(
         child: BodyTemplate(
           child: Column(
@@ -32,7 +55,7 @@ class LogSymptomsListScreen extends StatelessWidget {
                         collectionId: LogSymptomConstant.logSymptomCollection)
                     : FirebaseHelper().getStreamWithWhere(
                         collectionId: LogSymptomConstant.logSymptomCollection,
-                        whereId: UserConstants.userId,
+                        whereId: LogSymptomConstant.userId,
                         whereValue: getUserId(),
                       ),
                 builder: (context, snapshot) {
@@ -41,7 +64,7 @@ class LogSymptomsListScreen extends StatelessWidget {
                   }
                   final data = snapshot.data;
                   if (data?.docs != null && data!.docs.isNotEmpty) {
-                    final loggedSymptoms = data.docs
+                    loggedSymptoms = data.docs
                         .map((e) => LogSymptom.fromMap(e.data()))
                         .toList();
                     return ListView.separated(
@@ -62,10 +85,10 @@ class LogSymptomsListScreen extends StatelessWidget {
                               ),
                             ),
                             title: Text(
-                              loggedSymptoms[index].date,
+                              loggedSymptoms[index].symptom.symptom,
                             ),
                             subtitle: Text(
-                              loggedSymptoms[index].time,
+                              loggedSymptoms[index].dateTime,
                             ),
                             trailing: IconButton(
                               onPressed: () => navigate(

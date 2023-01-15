@@ -40,7 +40,9 @@ class HomeScreen extends StatelessWidget {
               ),
               Text(
                 "How is your pain ${user.name} today?",
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.headline6!.copyWith(
+                      fontSize: 18.sp,
+                    ),
               ),
               SizedBox(
                 height: 24.h,
@@ -104,7 +106,7 @@ class HomeScreen extends StatelessWidget {
               Text(
                 "Let's check in your symptoms",
                 style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                      fontSize: 16.sp,
+                      fontSize: 18.sp,
                       fontWeight: FontWeight.bold,
                     ),
               ),

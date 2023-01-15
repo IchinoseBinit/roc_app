@@ -7,8 +7,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:roc_app/models/firebase_user.dart';
 import 'package:roc_app/providers/user_provider.dart';
-import 'package:roc_app/screens/auth/forgot_password_screen.dart';
+import 'package:roc_app/screens/auth/login_screen.dart';
 import 'package:roc_app/screens/auth/register_profile_screen.dart';
+import 'package:roc_app/utils/show_toast_message.dart';
 import 'package:roc_app/widgets/body_template.dart';
 
 import '/constants/constants.dart';
@@ -21,11 +22,10 @@ import '/widgets/general_elevated_button.dart';
 import '/widgets/general_text_button.dart';
 import '/widgets/general_text_field.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({Key? key}) : super(key: key);
+class ForgotPasswordScreen extends StatelessWidget {
+  ForgotPasswordScreen({Key? key}) : super(key: key);
 
   final emailController = TextEditingController();
-  final passwordController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
 
@@ -78,6 +78,16 @@ class LoginScreen extends StatelessWidget {
                       SizedBox(
                         height: 8.h,
                       ),
+                      Text(
+                        "Enter your email to reset your password",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1!
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: 32.h,
+                      ),
                       GeneralTextField(
                         labelText: "Email",
                         autoFillHints: const [AutofillHints.email],
@@ -89,30 +99,6 @@ class LoginScreen extends StatelessWidget {
                             ValidationMixin().validateEmail(value!),
                       ),
                       SizedBox(
-                        height: 16.h,
-                      ),
-                      GeneralTextField(
-                        labelText: "Password",
-                        autoFillHints: const [AutofillHints.password],
-                        obscureText: true,
-                        controller: passwordController,
-                        textInputType: TextInputType.visiblePassword,
-                        textInputAction: TextInputAction.done,
-                        validate: (value) =>
-                            ValidationMixin().validatePassword(value!),
-                      ),
-                      SizedBox(height: 8.h),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: InkWell(
-                          onTap: () => navigate(
-                            context,
-                            ForgotPasswordScreen(),
-                          ),
-                          child: const Text("Forgot Password?"),
-                        ),
-                      ),
-                      SizedBox(
                         height: 32.h,
                       ),
                       GeneralElevatedButton(
@@ -121,21 +107,7 @@ class LoginScreen extends StatelessWidget {
                             context,
                           );
                         },
-                        title: "Login",
-                      ),
-                      SizedBox(
-                        height: 24.h,
-                      ),
-                      GeneralTextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => RegisterScreen(),
-                            ),
-                          );
-                        },
-                        title: "Register",
+                        title: "Reset",
                       ),
                     ],
                   ),
@@ -155,27 +127,11 @@ class LoginScreen extends StatelessWidget {
       }
       final firebaseAuth = FirebaseAuth.instance;
       GeneralAlertDialog().customLoadingDialog(context);
-      final userCredential = await firebaseAuth.signInWithEmailAndPassword(
-          email: emailController.text, password: passwordController.text);
-      final user = userCredential.user;
-      if (user != null) {
-        final firestore = FirebaseFirestore.instance;
-        final data = await firestore
-            .collection(UserConstants.userCollection)
-            .where(UserConstants.userId, isEqualTo: user.uid)
-            .get();
-        var map = {};
-        if (data.docs.isEmpty) {
-          navigateAndRemoveAll(context,
-              RegisterProfileScreen(uuid: user.uid, email: user.email ?? ""));
-          return;
-        } else {
-          map = data.docs.first.data();
-        }
-        Provider.of<UserProvider>(context, listen: false).setUser(map);
-      }
+      final userCredential = await firebaseAuth.sendPasswordResetEmail(
+          email: emailController.text);
+      showToast("Please check your email for the link to reset your password");
       Navigator.pop(context);
-      navigateAndRemoveAll(context, NavigationScreen());
+      navigateAndRemoveAll(context, LoginScreen());
     } on FirebaseAuthException catch (ex) {
       Navigator.pop(context);
       var message = "";

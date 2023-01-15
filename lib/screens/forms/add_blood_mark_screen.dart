@@ -90,11 +90,11 @@ class AddBloodMarkScreen extends StatelessWidget {
                     onLoading(context);
                     final bloodMark = BloodMark(
                       uuid: getUserId(),
-                      amountOfProtien: int.parse(
+                      amountOfProtien: double.parse(
                         getText(amountOfProtienController),
                       ),
                       date: getText(dateController),
-                      referenceRange: int.parse(
+                      referenceRange: double.parse(
                         getText(referenceRangeController),
                       ),
                     ).toJson();

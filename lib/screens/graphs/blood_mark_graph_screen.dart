@@ -7,15 +7,15 @@ import 'package:roc_app/widgets/body_template.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
-class GraphScreen extends StatefulWidget {
+class BloodMarkGraphScreen extends StatefulWidget {
   final List<BloodMark> marks;
 
-  const GraphScreen({super.key, required this.marks});
+  const BloodMarkGraphScreen({super.key, required this.marks});
   @override
-  _GraphScreenState createState() => _GraphScreenState();
+  _BloodMarkGraphScreenState createState() => _BloodMarkGraphScreenState();
 }
 
-class _GraphScreenState extends State<GraphScreen> {
+class _BloodMarkGraphScreenState extends State<BloodMarkGraphScreen> {
   late final List<Feature> features = [];
   late final List<int> list;
 

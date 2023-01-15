@@ -3,10 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:roc_app/constants/constants.dart';
 
 class CurvedButton extends StatelessWidget {
-  const CurvedButton({super.key, required this.title, required this.onTap});
+  const CurvedButton(
+      {super.key, required this.title, required this.onTap, this.color});
 
   final String title;
   final VoidCallback onTap;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class CurvedButton extends StatelessWidget {
           vertical: 8.h,
         ),
         decoration: BoxDecoration(
-          color: baseColor,
+          color: color ?? Colors.blue.shade700,
           borderRadius: BorderRadius.circular(40.r),
         ),
         child: Text(

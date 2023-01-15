@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:roc_app/providers/user_provider.dart';
+import 'package:roc_app/screens/admin_screens/doctor_comment_list_screen.dart';
 import 'package:roc_app/screens/admin_screens/donation_list_screen.dart';
 import 'package:roc_app/screens/admin_screens/message_list_screen.dart';
 import 'package:roc_app/screens/auth/login_screen.dart';
@@ -145,7 +146,21 @@ class MenuScreen extends StatelessWidget {
                 SizedBox(
                   height: 8.h,
                 ),
-              ],
+              ] else
+                Card(
+                  child: ListTile(
+                    title: const Text("Comments"),
+                    onTap: () =>
+                        navigate(context, const DoctorCommentListScreen()),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios,
+                      size: 18.h,
+                    ),
+                  ),
+                ),
+              SizedBox(
+                height: 8.h,
+              ),
               Card(
                 child: ListTile(
                   trailing: const Icon(

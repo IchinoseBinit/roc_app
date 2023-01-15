@@ -35,4 +35,19 @@ class ValidationMixin {
     }
     return null;
   }
+
+  validateRange(String value,
+      {String? title, required double maxVal, double? minVal}) {
+    final firstValidation = validate(value, title: title);
+    if (firstValidation != null) {
+      return firstValidation;
+    } else if (double.tryParse(value) == null) {
+      return "Please enter a valid number";
+    } else if (double.parse(value) > maxVal) {
+      return "Please enter a value lesser than $maxVal";
+    } else if (minVal != null && double.parse(value) < minVal) {
+      return "Please enter a value greated than $maxVal";
+    }
+    return null;
+  }
 }

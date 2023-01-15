@@ -1,6 +1,8 @@
 class Doctor {
   late String name;
   String? id;
+  late String phone;
+  late String email;
   late String address;
   late String qualification;
   late String experience;
@@ -8,6 +10,8 @@ class Doctor {
 
   Doctor({
     required this.name,
+    required this.phone,
+    required this.email,
     required this.address,
     required this.qualification,
     required this.experience,
@@ -16,6 +20,8 @@ class Doctor {
 
   Doctor.fromMap(Map obj, [this.id]) {
     name = obj["name"];
+    phone = obj["phone"] ?? "";
+    email = obj["email"] ?? "";
     address = obj["address"];
     qualification = obj["qualification"];
     experience = obj["experience"];
@@ -25,6 +31,8 @@ class Doctor {
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map["name"] = name;
+    map["phone"] = phone;
+    map["email"] = email;
     if (id != null) map["id"] = id;
     map["address"] = address;
     map["qualification"] = qualification;
