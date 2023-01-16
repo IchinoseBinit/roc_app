@@ -22,7 +22,7 @@ class GeneralElevatedButton extends StatelessWidget {
     Key? key,
     this.isSmallText = false,
     required this.title,
-    this.bgColor = baseColor,
+    this.bgColor,
     this.fgColor,
     this.borderRadius,
     this.isDisabled = false,
@@ -63,7 +63,7 @@ class GeneralElevatedButton extends StatelessWidget {
           backgroundColor: MaterialStateProperty.all(
             isDisabled
                 ? Theme.of(context).disabledColor
-                : bgColor ?? Theme.of(context).primaryColor,
+                : bgColor ?? Colors.blue.shade700,
           ),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(

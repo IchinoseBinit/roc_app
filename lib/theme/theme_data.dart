@@ -4,7 +4,7 @@ import '/constants/constants.dart';
 
 ThemeData lightTheme(BuildContext context) {
   return ThemeData(
-    primaryColor: baseColor,
+    primaryColor: Colors.blue.shade700,
     scaffoldBackgroundColor: primaryColor,
     iconTheme: const IconThemeData(color: Colors.blue),
     backgroundColor: primaryColor,

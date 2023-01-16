@@ -67,158 +67,159 @@ class DoctorListScreen extends StatelessWidget {
                       .map((e) => Doctor.fromMap(e.data(), e.id))
                       .toList();
                   return ListView.separated(
-                    itemBuilder: (_, index) => Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.r),
+                    itemBuilder: (_, index) => Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 4.w,
+                        vertical: 12.h,
                       ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 4.w,
-                          vertical: 8.h,
+                      child: ListTile(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(36.r),
                         ),
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            backgroundColor: Colors.grey.shade300,
-                            child: const Icon(
-                              Icons.person_outlined,
-                            ),
+                        tileColor: const Color(0xFFE5C5BD),
+                        leading: CircleAvatar(
+                          backgroundColor: Colors.grey.shade300,
+                          child: const Icon(
+                            Icons.person_outlined,
                           ),
-                          title: Text(
-                            doctors[index].name,
-                          ),
-                          subtitle: Text(
-                            doctors[index].qualification,
-                          ),
-                          trailing: InkWell(
-                            onTap: () async {
-                              final commentController = TextEditingController();
-                              showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(24.r),
-                                    topRight: Radius.circular(24.r),
-                                  ),
-                                ),
-                                builder: (context) => Padding(
-                                  padding: EdgeInsets.only(
-                                    left: 16,
-                                    right: 16,
-                                    top: 16,
-                                    bottom: MediaQuery.of(context)
-                                        .viewInsets
-                                        .bottom,
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "Write a comment",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyText1!
-                                                .copyWith(
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                          ),
-                                          IconButton(
-                                            padding: EdgeInsets.zero,
-                                            onPressed: () =>
-                                                Navigator.pop(context),
-                                            icon: Icon(
-                                              Icons.close_outlined,
-                                              size: 24.h,
-                                              color: Colors.red,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 16.h,
-                                      ),
-                                      GeneralTextField(
-                                        labelText: "Comment",
-                                        obscureText: false,
-                                        textInputType: TextInputType.multiline,
-                                        validate: (v) => ValidationMixin()
-                                            .validate(v, title: "Comment"),
-                                        textInputAction:
-                                            TextInputAction.newline,
-                                        maxLines: 5,
-                                      ),
-                                      SizedBox(
-                                        height: 24.h,
-                                      ),
-                                      GeneralElevatedButton(
-                                        title: "Submit",
-                                        onPressed: () async {
-                                          try {
-                                            onLoading(context);
-                                            final doctorComment =
-                                                DoctorComments(
-                                              doctor: doctors[index],
-                                              user: Provider.of<UserProvider>(
-                                                      context,
-                                                      listen: false)
-                                                  .user,
-                                              comment:
-                                                  getText(commentController),
-                                              dateTime: DateTime.now(),
-                                            ).toJson();
-                                            await FirebaseHelper().addData(
-                                              context,
-                                              map: doctorComment,
-                                              collectionId: DoctorConstant
-                                                  .commentCollection,
-                                            );
-                                            showToast("Commented Successfully");
-                                            Navigator.pop(context);
-                                            Navigator.pop(context);
-                                          } catch (ex) {
-                                            Navigator.pop(context);
-                                            GeneralAlertDialog()
-                                                .customAlertDialog(
-                                                    context, ex.toString());
-                                          }
-                                        },
-                                      ),
-                                      SizedBox(
-                                        height: 16.h,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                            //  => navigate(
-                            //   context,
-                            //   BookAppointmentScreen(
-                            //     doctor: doctors[index],
-                            //   ),
-                            // ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Icon(
-                                  Icons.comment_outlined,
-                                ),
-                                Text("Comment")
-                              ],
-                            ),
-                          ),
-                          onTap: () => navigate(
-                              context,
-                              DoctorDetailsScreen(
-                                doctor: doctors[index],
-                              )),
                         ),
+                        title: Text(
+                          doctors[index].name,
+                          style: const TextStyle(
+                            color: Color(0xFFE73736),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        subtitle: Text(
+                          doctors[index].qualification,
+                          style: const TextStyle(
+                            color: Color(0xFFE73736),
+                          ),
+                        ),
+                        trailing: InkWell(
+                          onTap: () async {
+                            final commentController = TextEditingController();
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(24.r),
+                                  topRight: Radius.circular(24.r),
+                                ),
+                              ),
+                              builder: (context) => Padding(
+                                padding: EdgeInsets.only(
+                                  left: 16,
+                                  right: 16,
+                                  top: 16,
+                                  bottom:
+                                      MediaQuery.of(context).viewInsets.bottom,
+                                ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Write a comment",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1!
+                                              .copyWith(
+                                                  fontWeight: FontWeight.bold),
+                                        ),
+                                        IconButton(
+                                          padding: EdgeInsets.zero,
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          icon: Icon(
+                                            Icons.close_outlined,
+                                            size: 24.h,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 16.h,
+                                    ),
+                                    GeneralTextField(
+                                      labelText: "Comment",
+                                      obscureText: false,
+                                      textInputType: TextInputType.multiline,
+                                      validate: (v) => ValidationMixin()
+                                          .validate(v, title: "Comment"),
+                                      textInputAction: TextInputAction.newline,
+                                      maxLines: 5,
+                                    ),
+                                    SizedBox(
+                                      height: 24.h,
+                                    ),
+                                    GeneralElevatedButton(
+                                      title: "Submit",
+                                      onPressed: () async {
+                                        try {
+                                          onLoading(context);
+                                          final doctorComment = DoctorComments(
+                                            doctor: doctors[index],
+                                            user: Provider.of<UserProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .user,
+                                            comment: getText(commentController),
+                                            dateTime: DateTime.now(),
+                                          ).toJson();
+                                          await FirebaseHelper().addData(
+                                            context,
+                                            map: doctorComment,
+                                            collectionId: DoctorConstant
+                                                .commentCollection,
+                                          );
+                                          showToast("Commented Successfully");
+                                          Navigator.pop(context);
+                                          Navigator.pop(context);
+                                        } catch (ex) {
+                                          Navigator.pop(context);
+                                          GeneralAlertDialog()
+                                              .customAlertDialog(
+                                                  context, ex.toString());
+                                        }
+                                      },
+                                    ),
+                                    SizedBox(
+                                      height: 16.h,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.comment_outlined,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                              Text(
+                                "Comment",
+                                style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        onTap: () => navigate(
+                            context,
+                            DoctorDetailsScreen(
+                              doctor: doctors[index],
+                            )),
                       ),
                     ),
                     separatorBuilder: (_, __) => SizedBox(

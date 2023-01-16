@@ -49,7 +49,7 @@ class GeneralTextButton extends StatelessWidget {
               MaterialStateProperty.all(bgColor ?? Colors.transparent),
           side: MaterialStateProperty.all<BorderSide>(
             BorderSide(
-              color: borderColor ?? Theme.of(context).primaryColor,
+              color: borderColor ?? Colors.blue.shade700,
               width: borderSize ?? 1,
             ),
           ),
@@ -83,10 +83,10 @@ class GeneralTextButton extends StatelessWidget {
               title,
               style: isSmallText
                   ? Theme.of(context).textTheme.subtitle2!.copyWith(
-                      color: fgColor ?? Theme.of(context).primaryColor,
+                      color: fgColor ?? Colors.blue.shade700,
                       fontWeight: FontWeight.w600)
                   : Theme.of(context).textTheme.subtitle1!.copyWith(
-                      color: fgColor ?? Theme.of(context).primaryColor,
+                      color: fgColor ?? Colors.blue.shade700,
                       fontWeight: FontWeight.w600),
             ),
           ],

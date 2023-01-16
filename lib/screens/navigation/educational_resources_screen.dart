@@ -34,9 +34,10 @@ class EducationalResourcesScreen extends StatelessWidget {
         child: BodyTemplate(
           child: Column(
             children: [
-              const HeaderTemplate(
+              HeaderTemplate(
                 headerText: "Educational Resources",
                 needBackButton: false,
+                fontSize: 24.sp,
               ),
               SizedBox(
                 height: 24.h,
@@ -59,6 +60,7 @@ class EducationalResourcesScreen extends StatelessWidget {
                           crossAxisCount: 2,
                           childAspectRatio: 1.2,
                           mainAxisSpacing: 32.h,
+                          mainAxisExtent: 200.h,
                           crossAxisSpacing: 16.w,
                         ),
                         itemCount: resourceList.length,
@@ -73,6 +75,7 @@ class EducationalResourcesScreen extends StatelessWidget {
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 resourceList[index].title,
@@ -84,20 +87,14 @@ class EducationalResourcesScreen extends StatelessWidget {
                                       color: const Color(0XFF34809F),
                                     ),
                               ),
-                              SizedBox(
-                                height: 16.h,
-                              ),
                               Flexible(
                                 child: Text(
                                   resourceList[index].description,
                                   style: Theme.of(context).textTheme.bodyText2,
                                   textAlign: TextAlign.justify,
-                                  maxLines: 3,
+                                  maxLines: 4,
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                              ),
-                              SizedBox(
-                                height: 4.h,
                               ),
                               Align(
                                 alignment: Alignment.bottomRight,
@@ -109,7 +106,7 @@ class EducationalResourcesScreen extends StatelessWidget {
                                     ),
                                   ),
                                   child: const Text(
-                                    "Read More",
+                                    "Read More >",
                                     style: TextStyle(
                                       color: Colors.blue,
                                       decoration: TextDecoration.underline,

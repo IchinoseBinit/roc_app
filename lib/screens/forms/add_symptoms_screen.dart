@@ -1,10 +1,14 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:roc_app/constants/constants.dart';
 import 'package:roc_app/models/symptom.dart';
+import 'package:roc_app/utils/firebase_helper.dart';
 import 'package:roc_app/utils/show_toast_message.dart';
 import 'package:roc_app/utils/util.dart';
+import 'package:roc_app/widgets/custom_loading_indicator.dart';
+import 'package:roc_app/widgets/general_alert_dialog.dart';
 
 import '/utils/validation_mixin.dart';
 import '/widgets/body_template.dart';
@@ -34,7 +38,7 @@ class AddSymptomsScreen extends StatelessWidget {
             key: formKey,
             child: Column(
               children: [
-                const HeaderTemplate(headerText: "Add Blood Mark"),
+                const HeaderTemplate(headerText: "Add Symptom"),
                 SizedBox(
                   height: 24.h,
                 ),
@@ -71,12 +75,26 @@ class AddSymptomsScreen extends StatelessWidget {
                     if (!formKey.currentState!.validate()) {
                       return;
                     }
-                    final symptom = Symptom(
-                      symptom: getText(symptomController),
-                      rate: double.parse(getText(symptomRangeController)),
-                    );
-                    showToast("Symptom added Successfully");
-                    Navigator.pop(context, symptom);
+                    try {
+                      onLoading(context);
+                      final symptom = Symptom(
+                        symptom: getText(symptomController),
+                        rate: double.parse(getText(symptomRangeController)),
+                        uuid: getUserId(),
+                      ).toJson();
+                      await FirebaseHelper().addData(
+                        context,
+                        map: symptom,
+                        collectionId: SymptomConstant.symptomCollection,
+                      );
+                      showToast("Symptom added Successfully");
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    } catch (ex) {
+                      Navigator.pop(context);
+                      GeneralAlertDialog()
+                          .customAlertDialog(context, ex.toString());
+                    }
                   },
                 ),
               ],

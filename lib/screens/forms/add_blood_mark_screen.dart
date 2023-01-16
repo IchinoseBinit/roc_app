@@ -63,7 +63,7 @@ class AddBloodMarkScreen extends StatelessWidget {
                 textInputType: TextInputType.none,
                 readonly: true,
                 suffixIcon: Icons.calendar_month_outlined,
-                suffixIconColor: baseColor,
+                suffixIconColor: Theme.of(context).primaryColor,
                 onTap: () async {
                   final date = await showDatePicker(
                     context: context,

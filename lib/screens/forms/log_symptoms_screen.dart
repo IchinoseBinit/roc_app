@@ -6,6 +6,7 @@ import 'package:roc_app/constants/constants.dart';
 import 'package:roc_app/models/log_symptom.dart';
 import 'package:roc_app/models/symptom.dart';
 import 'package:roc_app/screens/forms/add_symptoms_screen.dart';
+import 'package:roc_app/screens/list_screens/symptoms_list_screen.dart';
 import 'package:roc_app/utils/curved_button.dart';
 import 'package:roc_app/utils/firebase_helper.dart';
 import 'package:roc_app/utils/navigate.dart';
@@ -107,7 +108,7 @@ class _LogSymptomsScreenState extends State<LogSymptomsScreen> {
                   textInputType: TextInputType.none,
                   readonly: true,
                   suffixIcon: Icons.calendar_month_outlined,
-                  suffixIconColor: baseColor,
+                  suffixIconColor: Theme.of(context).primaryColor,
                   onTap: () async {
                     final date = await showDatePicker(
                       context: context,
@@ -135,7 +136,7 @@ class _LogSymptomsScreenState extends State<LogSymptomsScreen> {
                   textInputType: TextInputType.none,
                   readonly: true,
                   suffixIcon: Icons.calendar_month_outlined,
-                  suffixIconColor: baseColor,
+                  suffixIconColor: Theme.of(context).primaryColor,
                   onTap: () async {
                     final date = await showTimePicker(
                         context: context,
@@ -169,8 +170,8 @@ class _LogSymptomsScreenState extends State<LogSymptomsScreen> {
                       CurvedButton(
                           title: "Add Symptom",
                           onTap: () async {
-                            final data =
-                                await navigate(context, AddSymptomsScreen());
+                            final data = await navigate(
+                                context, const SymptomsListScreen());
                             if (data != null) {
                               setState(() {
                                 symptom = data;
@@ -199,10 +200,7 @@ class _LogSymptomsScreenState extends State<LogSymptomsScreen> {
                           ),
                           onPressed: () async {
                             final data = await navigate(
-                                context,
-                                AddSymptomsScreen(
-                                  symptom: symptom,
-                                ));
+                                context, const SymptomsListScreen());
                             if (data != null) {
                               setState(() {
                                 symptom = data;
@@ -315,7 +313,11 @@ class _SliderWidgetState extends State<SliderWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CurvedButton(title: widget.title, onTap: () {}, color: baseColor),
+        CurvedButton(
+          title: widget.title,
+          onTap: () {},
+          color: const Color(0xFFCAB47C),
+        ),
         Container(
           margin: EdgeInsets.only(
             top: 8.h,

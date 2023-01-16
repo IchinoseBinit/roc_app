@@ -8,11 +8,13 @@ class HeaderTemplate extends StatelessWidget {
   const HeaderTemplate({
     super.key,
     this.headerText,
+    this.fontSize,
     this.needBackButton = true,
   });
 
   final String? headerText;
   final bool needBackButton;
+  final double? fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +58,7 @@ class HeaderTemplate extends StatelessWidget {
             child: Text(
               headerText!,
               style: GoogleFonts.inter(
-                fontSize: 32.sp,
+                fontSize: fontSize ?? 32.sp,
                 fontWeight: FontWeight.w700,
               ),
             ),
