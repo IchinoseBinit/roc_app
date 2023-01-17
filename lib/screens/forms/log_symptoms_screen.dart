@@ -55,16 +55,13 @@ class _LogSymptomsScreenState extends State<LogSymptomsScreen> {
           marginH: 16,
           title: "Save",
           onPressed: () async {
-            if (symptom == null) {
-              showToast("Please select a symptom first", color: Colors.red);
-              return;
-            } else if (!formKey.currentState!.validate()) {
+            if (!formKey.currentState!.validate()) {
               return;
             }
             try {
               onLoading(context);
               final symptomDetail = LogSymptom(
-                symptom: symptom!,
+                symptom: symptom,
                 dateTime:
                     "${getText(dateController).trim()} ${getText(timeController).trim()}",
                 userId: FirebaseAuth.instance.currentUser!.uid,

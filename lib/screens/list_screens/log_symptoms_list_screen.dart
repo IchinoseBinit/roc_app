@@ -66,7 +66,12 @@ class _LogSymptomsListScreenState extends State<LogSymptomsListScreen> {
                   if (data?.docs != null && data!.docs.isNotEmpty) {
                     loggedSymptoms = data.docs
                         .map((e) => LogSymptom.fromMap(e.data()))
-                        .toList();
+                        .toList()
+                      ..sort((a, b) {
+                        return DateTime.parse(b.dateTime.split(" ").first)
+                            .compareTo(
+                                DateTime.parse(a.dateTime.split(" ").first));
+                      });
                     return ListView.separated(
                       itemBuilder: (_, index) => Card(
                         shape: RoundedRectangleBorder(
@@ -85,7 +90,11 @@ class _LogSymptomsListScreenState extends State<LogSymptomsListScreen> {
                               ),
                             ),
                             title: Text(
-                              loggedSymptoms[index].symptom.symptom,
+                              loggedSymptoms[index]
+                                      .symptom
+                                      ?.symptom
+                                      .toString() ??
+                                  "",
                             ),
                             subtitle: Text(
                               loggedSymptoms[index].dateTime,

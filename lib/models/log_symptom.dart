@@ -1,7 +1,7 @@
 import 'package:roc_app/models/symptom.dart';
 
 class LogSymptom {
-  late Symptom symptom;
+  Symptom? symptom;
 
   late String dateTime;
   late String userId;
@@ -12,7 +12,7 @@ class LogSymptom {
   late String weightLoss;
 
   LogSymptom({
-    required this.symptom,
+    this.symptom,
     required this.dateTime,
     required this.userId,
     required this.pelvic,
@@ -23,7 +23,7 @@ class LogSymptom {
   });
 
   LogSymptom.fromMap(Map obj) {
-    symptom = Symptom.fromMap(obj["symptom"]);
+    if (obj["symptom"] != null) symptom = Symptom.fromMap(obj["symptom"]);
     dateTime = obj["dateTime"];
     userId = obj["userId"];
     pelvic = obj["pelvic"];
@@ -35,7 +35,7 @@ class LogSymptom {
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map["symptom"] = symptom.toJson();
+    if (symptom != null) map["symptom"] = symptom!.toJson();
     map["dateTime"] = dateTime;
     map["userId"] = userId;
     map["pelvic"] = pelvic;

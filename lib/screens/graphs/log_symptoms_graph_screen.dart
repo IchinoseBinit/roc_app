@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:roc_app/models/blood_mark.dart';
 import 'package:roc_app/models/log_symptom.dart';
+import 'package:roc_app/models/symptom.dart';
 import 'package:roc_app/widgets/body_template.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -15,13 +16,42 @@ class LogSymptomsGraphScreen extends StatefulWidget {
 }
 
 class _LogSymptomsGraphScreenState extends State<LogSymptomsGraphScreen> {
+  List<SymptomGraph> list = [];
+
   @override
   void initState() {
     super.initState();
-    // final sortedList = widget.marks
-    //   ..sort((a, b) => a.amountOfProtien.compareTo(b.amountOfProtien));
-    // final val = sortedList.last.amountOfProtien / 6;
-    // list = List.generate(7, (index) => (index * val.toDouble()).toInt());
+    for (var l in widget.loggedSymptom) {
+      if (l.symptom != null) {
+        if (list.isEmpty) {
+          list.add(
+            SymptomGraph(
+              name: l.symptom!.symptom,
+              details: [
+                GraphDetail(dateTime: l.dateTime, rate: l.symptom!.rate)
+              ],
+            ),
+          );
+        } else {
+          final index = list.indexWhere((element) =>
+              element.name.toLowerCase() == l.symptom!.symptom.toLowerCase());
+          if (index >= 0) {
+            list[index].details.add(
+                  GraphDetail(dateTime: l.dateTime, rate: l.symptom!.rate),
+                );
+          } else {
+            list.add(
+              SymptomGraph(
+                name: l.symptom!.symptom,
+                details: [
+                  GraphDetail(dateTime: l.dateTime, rate: l.symptom!.rate)
+                ],
+              ),
+            );
+          }
+        }
+      }
+    }
   }
 
   @override
@@ -58,15 +88,18 @@ class _LogSymptomsGraphScreenState extends State<LogSymptomsGraphScreen> {
                   enableAxisAnimation: true,
                   series: <ChartSeries>[
                     // Renders line chart
-                    LineSeries<LogSymptom, String>(
-                      dataSource: widget.loggedSymptom,
-                      xValueMapper: (LogSymptom symptom, _) =>
-                          symptom.dateTime.toString(),
-                      yValueMapper: (LogSymptom symptom, _) =>
-                          symptom.symptom.rate,
-                      legendItemText: "Rate",
-                    ),
-                    LineSeries<LogSymptom, String>(
+                    for (var l in list)
+                      if (l.details.length > 1)
+                        SplineSeries<GraphDetail, String>(
+                          splineType: SplineType.monotonic,
+                          dataSource: l.details,
+                          xValueMapper: (GraphDetail detail, _) =>
+                              detail.dateTime.toString(),
+                          yValueMapper: (GraphDetail detail, _) => detail.rate,
+                          legendItemText: l.name,
+                        ),
+                    SplineSeries<LogSymptom, String>(
+                      splineType: SplineType.monotonic,
                       dataSource: widget.loggedSymptom,
                       xValueMapper: (LogSymptom symptom, _) =>
                           symptom.dateTime.toString(),
@@ -74,7 +107,8 @@ class _LogSymptomsGraphScreenState extends State<LogSymptomsGraphScreen> {
                           int.tryParse(symptom.pelvic) ?? 0,
                       legendItemText: "Pelvic",
                     ),
-                    LineSeries<LogSymptom, String>(
+                    SplineSeries<LogSymptom, String>(
+                      splineType: SplineType.monotonic,
                       dataSource: widget.loggedSymptom,
                       xValueMapper: (LogSymptom symptom, _) =>
                           symptom.dateTime.toString(),
@@ -82,7 +116,8 @@ class _LogSymptomsGraphScreenState extends State<LogSymptomsGraphScreen> {
                           int.tryParse(symptom.indigestion) ?? 0,
                       legendItemText: "Indigestion",
                     ),
-                    LineSeries<LogSymptom, String>(
+                    SplineSeries<LogSymptom, String>(
+                      splineType: SplineType.monotonic,
                       dataSource: widget.loggedSymptom,
                       xValueMapper: (LogSymptom symptom, _) =>
                           symptom.dateTime.toString(),
@@ -90,7 +125,8 @@ class _LogSymptomsGraphScreenState extends State<LogSymptomsGraphScreen> {
                           int.tryParse(symptom.nausea) ?? 0,
                       legendItemText: "Nausea",
                     ),
-                    LineSeries<LogSymptom, String>(
+                    SplineSeries<LogSymptom, String>(
+                      splineType: SplineType.monotonic,
                       dataSource: widget.loggedSymptom,
                       xValueMapper: (LogSymptom symptom, _) =>
                           symptom.dateTime.toString(),
@@ -98,7 +134,8 @@ class _LogSymptomsGraphScreenState extends State<LogSymptomsGraphScreen> {
                           int.tryParse(symptom.bloating) ?? 0,
                       legendItemText: "Bloating",
                     ),
-                    LineSeries<LogSymptom, String>(
+                    SplineSeries<LogSymptom, String>(
+                      splineType: SplineType.monotonic,
                       dataSource: widget.loggedSymptom,
                       xValueMapper: (LogSymptom symptom, _) =>
                           symptom.dateTime.toString(),
@@ -118,4 +155,24 @@ class _LogSymptomsGraphScreenState extends State<LogSymptomsGraphScreen> {
       ),
     );
   }
+}
+
+class SymptomGraph {
+  late List<GraphDetail> details;
+  late String name;
+
+  SymptomGraph({
+    required this.details,
+    required this.name,
+  });
+}
+
+class GraphDetail {
+  late String dateTime;
+  late double rate;
+
+  GraphDetail({
+    required this.dateTime,
+    required this.rate,
+  });
 }

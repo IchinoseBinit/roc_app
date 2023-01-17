@@ -58,17 +58,19 @@ class LogSymptomDetailScreen extends StatelessWidget {
               SizedBox(
                 height: 8.h,
               ),
-              getText(context,
-                  title: "Symptom Name", value: logSymptom.symptom.symptom),
-              SizedBox(
-                height: 8.h,
-              ),
-              getText(context,
-                  title: "Rate",
-                  value: logSymptom.symptom.rate.toStringAsFixed(2)),
-              SizedBox(
-                height: 8.h,
-              ),
+              if (logSymptom.symptom != null) ...[
+                getText(context,
+                    title: "Symptom Name", value: logSymptom.symptom!.symptom),
+                SizedBox(
+                  height: 8.h,
+                ),
+                getText(context,
+                    title: "Rate",
+                    value: logSymptom.symptom!.rate.toStringAsFixed(2)),
+                SizedBox(
+                  height: 8.h,
+                ),
+              ],
               getText(context,
                   title: "Date", value: logSymptom.dateTime.split(" ").first),
               SizedBox(
