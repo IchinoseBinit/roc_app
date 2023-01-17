@@ -90,14 +90,14 @@ class _LogSymptomsListScreenState extends State<LogSymptomsListScreen> {
                               ),
                             ),
                             title: Text(
+                              loggedSymptoms[index].dateTime,
+                            ),
+                            subtitle: Text(
                               loggedSymptoms[index]
                                       .symptom
                                       ?.symptom
                                       .toString() ??
                                   "",
-                            ),
-                            subtitle: Text(
-                              loggedSymptoms[index].dateTime,
                             ),
                             trailing: IconButton(
                               onPressed: () => navigate(
