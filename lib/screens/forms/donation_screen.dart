@@ -82,23 +82,7 @@ class DonationScreen extends StatelessWidget {
                         labelText: "Date",
                         controller: expiryDateController,
                         obscureText: false,
-                        textInputType: TextInputType.none,
-                        readonly: true,
-                        onTap: () async {
-                          final date = await showDatePicker(
-                            context: context,
-                            initialDate:
-                                DateTime.tryParse(expiryDateController.text) ??
-                                    DateTime.now(),
-                            firstDate: DateTime.now()
-                                .subtract(const Duration(days: 30)),
-                            lastDate: DateTime.now(),
-                          );
-                          if (date != null) {
-                            expiryDateController.text =
-                                DateFormat("yyyy-MM-dd").format(date);
-                          }
-                        },
+                        textInputType: TextInputType.datetime,
                         validate: (v) =>
                             ValidationMixin().validate(v, title: "Date"),
                         textInputAction: TextInputAction.next,
