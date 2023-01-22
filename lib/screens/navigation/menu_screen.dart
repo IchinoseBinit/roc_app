@@ -6,7 +6,7 @@ import 'package:roc_app/screens/admin_screens/doctor_comment_list_screen.dart';
 import 'package:roc_app/screens/admin_screens/donation_list_screen.dart';
 import 'package:roc_app/screens/admin_screens/message_list_screen.dart';
 import 'package:roc_app/screens/auth/login_screen.dart';
-import 'package:roc_app/screens/list_screens/appointments_list_screen.dart';
+import 'package:roc_app/screens/list_screens/comment_list_screen.dart';
 import 'package:roc_app/screens/list_screens/blood_marks_list_screen.dart';
 import 'package:roc_app/screens/list_screens/log_symptoms_list_screen.dart';
 import 'package:roc_app/screens/list_screens/note_list_screen.dart';
@@ -89,10 +89,10 @@ class MenuScreen extends StatelessWidget {
               ),
               Card(
                 child: ListTile(
-                  title: const Text("Appointments"),
+                  title: const Text("Comments"),
                   onTap: () => navigate(
                     context,
-                    const AppointmentsListScreen(),
+                    const CommentListScreen(),
                   ),
                   trailing: Icon(
                     Icons.arrow_forward_ios,

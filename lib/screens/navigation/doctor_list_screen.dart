@@ -27,18 +27,16 @@ class DoctorListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: isAdmin(context)
-          ? Padding(
-              padding: const EdgeInsets.only(
-                bottom: 16,
-              ),
-              child: GeneralElevatedButton(
-                onPressed: () => navigate(context, AddDoctorScreen()),
-                title: "Add Doctors",
-                marginH: 16,
-              ),
-            )
-          : null,
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(
+          bottom: 16,
+        ),
+        child: GeneralElevatedButton(
+          onPressed: () => navigate(context, AddDoctorScreen()),
+          title: "Add Doctor you know",
+          marginH: 16,
+        ),
+      ),
       body: SafeArea(
         child: BodyTemplate(
           child: Column(
@@ -51,8 +49,11 @@ class DoctorListScreen extends StatelessWidget {
                 height: 24.h,
               ),
               StreamBuilder(
-                stream: FirebaseHelper()
-                    .getStream(collectionId: DoctorConstant.doctorCollection),
+                stream: FirebaseHelper().getStreamWithWhere(
+                  collectionId: DoctorConstant.doctorCollection,
+                  whereId: DoctorConstant.userId,
+                  whereValue: getUserId(),
+                ),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator.adaptive();
@@ -223,7 +224,7 @@ class DoctorListScreen extends StatelessWidget {
                       ),
                     ),
                     separatorBuilder: (_, __) => SizedBox(
-                      height: 8.h,
+                      height: 4.h,
                     ),
                     itemCount: doctors.length,
                     shrinkWrap: true,

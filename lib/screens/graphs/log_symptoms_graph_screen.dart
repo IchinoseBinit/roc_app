@@ -89,15 +89,14 @@ class _LogSymptomsGraphScreenState extends State<LogSymptomsGraphScreen> {
                   series: <ChartSeries>[
                     // Renders line chart
                     for (var l in list)
-                      if (l.details.length > 1)
-                        SplineSeries<GraphDetail, String>(
-                          splineType: SplineType.monotonic,
-                          dataSource: l.details,
-                          xValueMapper: (GraphDetail detail, _) =>
-                              detail.dateTime.toString(),
-                          yValueMapper: (GraphDetail detail, _) => detail.rate,
-                          legendItemText: l.name,
-                        ),
+                      SplineSeries<GraphDetail, String>(
+                        splineType: SplineType.monotonic,
+                        dataSource: l.details,
+                        xValueMapper: (GraphDetail detail, _) =>
+                            detail.dateTime.toString(),
+                        yValueMapper: (GraphDetail detail, _) => detail.rate,
+                        legendItemText: l.name,
+                      ),
                     SplineSeries<LogSymptom, String>(
                       splineType: SplineType.monotonic,
                       dataSource: widget.loggedSymptom,

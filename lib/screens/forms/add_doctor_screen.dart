@@ -125,6 +125,7 @@ class AddDoctorScreen extends StatelessWidget {
                   try {
                     onLoading(context);
                     final doctor = Doctor(
+                      userId: isAdmin(context) ? null : getUserId(),
                       name: getText(fullNameController),
                       phone: getText(phoneController),
                       email: getText(emailController),

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:roc_app/models/doctor.dart';
-import 'package:roc_app/screens/forms/book_appointment_screen.dart';
-import 'package:roc_app/utils/navigate.dart';
-import '/widgets/general_elevated_button.dart';
 
 import '/widgets/body_template.dart';
 import '/widgets/header_template.dart';
@@ -26,18 +23,6 @@ class DoctorDetailsScreen extends StatelessWidget {
                 height: 24.h,
               ),
               DoctorBody(doctor: doctor),
-              SizedBox(
-                height: 32.h,
-              ),
-              GeneralElevatedButton(
-                title: "Book Appointment",
-                onPressed: () => navigate(
-                  context,
-                  BookAppointmentScreen(
-                    doctor: doctor,
-                  ),
-                ),
-              ),
             ],
           ),
         ),

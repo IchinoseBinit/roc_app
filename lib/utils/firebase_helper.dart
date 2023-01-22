@@ -46,6 +46,23 @@ class FirebaseHelper {
     }
   }
 
+  Stream<QuerySnapshot<Map<String, dynamic>>> getStreamWithWhereIn({
+    required String collectionId,
+    required String whereId,
+    required List<Object?> whereValueList,
+  }) async* {
+    try {
+      final fireStore = FirebaseFirestore.instance;
+
+      yield* fireStore
+          .collection(collectionId)
+          .where(whereId, whereIn: whereValueList)
+          .snapshots();
+    } catch (ex) {
+      throw ex.toString();
+    }
+  }
+
   Stream<QuerySnapshot<Map<String, dynamic>>> getStreamWithMultipleWhere({
     required String collectionId,
     required String whereId,

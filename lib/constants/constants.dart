@@ -55,6 +55,7 @@ class ContactUsConstant {
 class DoctorConstant {
   static const doctorCollection = "doctor";
   static const commentCollection = "doctor-comment";
+  static const userId = "userId";
 }
 
 class DonationConstant {

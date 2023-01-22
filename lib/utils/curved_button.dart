@@ -27,6 +27,7 @@ class CurvedButton extends StatelessWidget {
           title,
           style: Theme.of(context).textTheme.bodyText1!.copyWith(
                 fontWeight: FontWeight.bold,
+                color: color != null ? Colors.black : Colors.white,
               ),
         ),
       ),
