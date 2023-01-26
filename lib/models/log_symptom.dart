@@ -26,7 +26,7 @@ class LogSymptom {
 
   LogSymptom.fromMap(Map obj, this.id) {
     if (obj["symptom"] != null) symptom = Symptom.fromMap(obj["symptom"]);
-    dateTime = obj["dateTime"];
+    dateTime = obj["dateTime"] ?? "";
     userId = obj["userId"];
     pelvic = obj["pelvic"];
     indigestion = obj["indigestion"];

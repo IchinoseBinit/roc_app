@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:roc_app/models/blood_mark.dart';
 import 'package:roc_app/widgets/body_template.dart';
+import 'package:roc_app/widgets/header_template.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
@@ -55,16 +56,11 @@ class _BloodMarkGraphScreenState extends State<BloodMarkGraphScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 64.0),
-                child: Text(
-                  "Blood Mark",
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 2,
-                  ),
-                ),
+              HeaderTemplate(
+                headerText: "Blood Mark",
+              ),
+              SizedBox(
+                height: 24.h,
               ),
               SfCartesianChart(
                 primaryXAxis: CategoryAxis(),
