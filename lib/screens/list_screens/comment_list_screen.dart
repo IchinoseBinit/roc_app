@@ -30,7 +30,7 @@ class CommentListScreen extends StatelessWidget {
               SizedBox(
                 height: 24.h,
               ),
-              StreamBuilder(
+              CommentBody(
                 stream: isAdmin(context)
                     ? FirebaseHelper().getStream(
                         collectionId: DoctorConstant.commentCollection)
@@ -38,73 +38,83 @@ class CommentListScreen extends StatelessWidget {
                         collectionId: DoctorConstant.commentCollection,
                         whereId: "user.uuid",
                         whereValue: getUserId(),
-                        // whereValue:
-                        // Provider.of<UserProvider>(context).user.toJson(),
                       ),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator.adaptive();
-                  }
-                  print(snapshot.data?.docs);
-                  final data = snapshot.data;
-                  if (data?.docs != null && data!.docs.isNotEmpty) {
-                    final comments = data.docs
-                        .map((e) => DoctorComments.fromMap(
-                              e.data(),
-                            ))
-                        .toList();
-                    return ListView.separated(
-                      itemBuilder: (_, index) => Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.r),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 4.w,
-                            vertical: 8.h,
-                          ),
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              backgroundColor: Colors.grey.shade300,
-                              child: const Icon(
-                                Icons.local_hospital_outlined,
-                              ),
-                            ),
-                            title: Text(
-                              comments[index].doctor.name,
-                            ),
-                            subtitle: Text(
-                              "${DateFormat("yyyy-MMM-dd").format(comments[index].dateTime)} ",
-                            ),
-                            trailing: IconButton(
-                              onPressed: () => navigate(
-                                context,
-                                CommentDetailScreen(
-                                  comments: comments[index],
-                                ),
-                              ),
-                              icon: const Icon(Icons.arrow_forward_ios),
-                            ),
-                          ),
-                        ),
-                      ),
-                      separatorBuilder: (_, __) => SizedBox(
-                        height: 8.h,
-                      ),
-                      itemCount: comments.length,
-                      shrinkWrap: true,
-                      primary: false,
-                    );
-                  }
-                  return const Center(
-                    child: Text("No Comments till now"),
-                  );
-                },
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class CommentBody extends StatelessWidget {
+  const CommentBody({super.key, required this.stream});
+
+  final Stream stream;
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: stream,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator.adaptive();
+        }
+        final data = snapshot.data;
+        if (data?.docs != null && data!.docs.isNotEmpty) {
+          final comments = data.docs
+              .map((e) => DoctorComments.fromMap(
+                    e.data(),
+                  ))
+              .toList();
+          return ListView.separated(
+            itemBuilder: (_, index) => Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 4.w,
+                  vertical: 8.h,
+                ),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    backgroundColor: Colors.grey.shade300,
+                    child: const Icon(
+                      Icons.local_hospital_outlined,
+                    ),
+                  ),
+                  title: Text(
+                    comments[index].doctor.name,
+                  ),
+                  subtitle: Text(
+                    "${DateFormat("yyyy-MMM-dd").format(comments[index].dateTime)} ",
+                  ),
+                  trailing: IconButton(
+                    onPressed: () => navigate(
+                      context,
+                      CommentDetailScreen(
+                        comments: comments[index],
+                      ),
+                    ),
+                    icon: const Icon(Icons.arrow_forward_ios),
+                  ),
+                ),
+              ),
+            ),
+            separatorBuilder: (_, __) => SizedBox(
+              height: 8.h,
+            ),
+            itemCount: comments.length,
+            shrinkWrap: true,
+            primary: false,
+          );
+        }
+        return const Center(
+          child: Text("No Comments till now"),
+        );
+      },
     );
   }
 }

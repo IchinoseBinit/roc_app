@@ -9,7 +9,9 @@ import 'package:roc_app/providers/user_provider.dart';
 import 'package:roc_app/screens/forms/book_appointment_screen.dart';
 import 'package:roc_app/utils/firebase_helper.dart';
 import 'package:roc_app/utils/navigate.dart';
+import 'package:roc_app/utils/show_toast_message.dart';
 import 'package:roc_app/utils/util.dart';
+import 'package:roc_app/widgets/custom_loading_indicator.dart';
 import '/widgets/general_elevated_button.dart';
 
 import '/widgets/body_template.dart';
@@ -100,6 +102,53 @@ class LogSymptomDetailScreen extends StatelessWidget {
               ),
               getText(context,
                   title: "Weight Loss", value: logSymptom.weightLoss),
+              SizedBox(
+                height: 24.h,
+              ),
+              GeneralElevatedButton(
+                title: "Delete",
+                onPressed: () async {
+                  final val = await showDialog(
+                    context: context,
+                    builder: (_) => AlertDialog(
+                      title: const Text("Delete"),
+                      content: const Text("Do you want to delete the symptom"),
+                      actions: [
+                        OutlinedButton(
+                          onPressed: () => Navigator.pop(context, true),
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide.none,
+                          ),
+                          child: const Text("Yes"),
+                        ),
+                        OutlinedButton(
+                          onPressed: () => Navigator.pop(context, false),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: Colors.red,
+                            side: BorderSide.none,
+                          ),
+                          child: const Text("No"),
+                        )
+                      ],
+                    ),
+                  );
+                  try {
+                    if (val == true) {
+                      onLoading(context);
+                      await FirebaseHelper().removeData(
+                        context,
+                        collectionId: LogSymptomConstant.logSymptomCollection,
+                        docId: logSymptom.id!,
+                      );
+                      showToast("Successfully Deleted");
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    }
+                  } catch (ex) {
+                    showToast("Error deleting the symptom", color: Colors.red);
+                  }
+                },
+              )
             ],
           ),
         ),

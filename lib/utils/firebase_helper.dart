@@ -141,4 +141,20 @@ class FirebaseHelper {
       throw ex.toString();
     }
   }
+
+  removeData(
+    BuildContext context, {
+    required String collectionId,
+    required String docId,
+  }) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection(collectionId)
+          .doc(docId)
+          .delete();
+    } catch (ex) {
+      print(ex.toString());
+      rethrow;
+    }
+  }
 }

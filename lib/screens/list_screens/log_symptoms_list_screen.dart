@@ -65,7 +65,7 @@ class _LogSymptomsListScreenState extends State<LogSymptomsListScreen> {
                   final data = snapshot.data;
                   if (data?.docs != null && data!.docs.isNotEmpty) {
                     loggedSymptoms = data.docs
-                        .map((e) => LogSymptom.fromMap(e.data()))
+                        .map((e) => LogSymptom.fromMap(e.data(), e.id))
                         .toList()
                       ..sort((a, b) {
                         return DateTime.parse(b.dateTime.split(" ").first)
@@ -83,6 +83,12 @@ class _LogSymptomsListScreenState extends State<LogSymptomsListScreen> {
                             vertical: 8.h,
                           ),
                           child: ListTile(
+                            onTap: () => navigate(
+                              context,
+                              LogSymptomDetailScreen(
+                                logSymptom: loggedSymptoms[index],
+                              ),
+                            ),
                             leading: CircleAvatar(
                               backgroundColor: Colors.grey.shade300,
                               child: const Icon(
@@ -99,15 +105,7 @@ class _LogSymptomsListScreenState extends State<LogSymptomsListScreen> {
                                       .toString() ??
                                   "",
                             ),
-                            trailing: IconButton(
-                              onPressed: () => navigate(
-                                context,
-                                LogSymptomDetailScreen(
-                                  logSymptom: loggedSymptoms[index],
-                                ),
-                              ),
-                              icon: const Icon(Icons.arrow_forward_ios),
-                            ),
+                            trailing: Icon(Icons.arrow_forward_ios),
                           ),
                         ),
                       ),

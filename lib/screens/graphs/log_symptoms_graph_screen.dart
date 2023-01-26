@@ -5,6 +5,7 @@ import 'package:roc_app/models/blood_mark.dart';
 import 'package:roc_app/models/log_symptom.dart';
 import 'package:roc_app/models/symptom.dart';
 import 'package:roc_app/widgets/body_template.dart';
+import 'package:roc_app/widgets/header_template.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class LogSymptomsGraphScreen extends StatefulWidget {
@@ -63,16 +64,8 @@ class _LogSymptomsGraphScreenState extends State<LogSymptomsGraphScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 64.0),
-                child: Text(
-                  "Logged Symptoms",
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 2,
-                  ),
-                ),
+              const HeaderTemplate(
+                headerText: "Logged Symptoms",
               ),
               SizedBox(
                 height: .5.sh,

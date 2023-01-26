@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:roc_app/constants/constants.dart';
 import 'package:roc_app/models/doctor.dart';
+import 'package:roc_app/screens/list_screens/comment_list_screen.dart';
+import 'package:roc_app/utils/firebase_helper.dart';
+import 'package:roc_app/utils/util.dart';
 
 import '/widgets/body_template.dart';
 import '/widgets/header_template.dart';
@@ -23,6 +27,19 @@ class DoctorDetailsScreen extends StatelessWidget {
                 height: 24.h,
               ),
               DoctorBody(doctor: doctor),
+              // SizedBox(
+              //   height: 24.h,
+              // ),
+              // CommentBody(
+              //   stream: isAdmin(context)
+              //       ? FirebaseHelper().getStream(
+              //           collectionId: DoctorConstant.commentCollection)
+              //       : FirebaseHelper().getStreamWithMultipleWhere(
+              //           collectionId: DoctorConstant.commentCollection,
+              //           whereId: "user.uuid",
+              //           whereValue: getUserId(),
+              //         ),
+              // ),
             ],
           ),
         ),

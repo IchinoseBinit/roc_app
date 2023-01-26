@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:roc_app/models/blood_mark.dart';
 import 'package:roc_app/screens/graphs/blood_mark_graph_screen.dart';
 import 'package:roc_app/utils/navigate.dart';
+import 'package:roc_app/utils/show_toast_message.dart';
+import 'package:roc_app/widgets/custom_loading_indicator.dart';
 import 'package:roc_app/widgets/general_elevated_button.dart';
 
 import '/constants/constants.dart';
@@ -60,7 +62,7 @@ class _BloodMarkListScreenState extends State<BloodMarkListScreen> {
                   final data = snapshot.data;
                   if (data?.docs != null && data!.docs.isNotEmpty) {
                     bloodMarkList = data.docs
-                        .map((e) => BloodMark.fromMap(e.data()))
+                        .map((e) => BloodMark.fromMap(e.data(), e.id))
                         .toList();
 
                     return ListView.separated(
@@ -86,8 +88,69 @@ class _BloodMarkListScreenState extends State<BloodMarkListScreen> {
                             subtitle: Text(
                               "Protien: ${bloodMarkList[index].amountOfProtien}",
                             ),
-                            trailing: Text(
-                                "Range: ${bloodMarkList[index].referenceRange.toString()}"),
+                            trailing: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text(
+                                  "Range: ${bloodMarkList[index].referenceRange.toString()}",
+                                ),
+                                Flexible(
+                                  child: IconButton(
+                                    padding: EdgeInsets.zero,
+                                    onPressed: () async {
+                                      final val = await showDialog(
+                                        context: context,
+                                        builder: (_) => AlertDialog(
+                                          title: const Text("Delete"),
+                                          content: const Text(
+                                              "Do you want to delete the Blood Mark?"),
+                                          actions: [
+                                            OutlinedButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context, true),
+                                              style: OutlinedButton.styleFrom(
+                                                side: BorderSide.none,
+                                              ),
+                                              child: const Text("Yes"),
+                                            ),
+                                            OutlinedButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context, false),
+                                              style: OutlinedButton.styleFrom(
+                                                foregroundColor: Colors.red,
+                                                side: BorderSide.none,
+                                              ),
+                                              child: const Text("No"),
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                      try {
+                                        if (val == true) {
+                                          onLoading(context);
+                                          await FirebaseHelper().removeData(
+                                            context,
+                                            collectionId: BloodMarkConstant
+                                                .bloodMarkCollection,
+                                            docId: bloodMarkList[index].id!,
+                                          );
+                                          showToast("Successfully Deleted");
+                                          Navigator.pop(context);
+                                        }
+                                      } catch (ex) {
+                                        showToast(
+                                            "Error deleting the blood mark",
+                                            color: Colors.red);
+                                      }
+                                    },
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),
