@@ -56,7 +56,7 @@ class _BloodMarkGraphScreenState extends State<BloodMarkGraphScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              HeaderTemplate(
+              const HeaderTemplate(
                 headerText: "Blood Mark",
               ),
               SizedBox(
