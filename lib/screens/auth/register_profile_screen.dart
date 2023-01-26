@@ -93,25 +93,6 @@ class RegisterProfileScreen extends StatelessWidget {
                   padding: basePadding,
                   child: Column(
                     children: [
-                      // Hero(
-                      //   tag: "image-url",
-                      //   child: SizedBox(
-                      //     height: SizeConfig.height * 16,
-                      //     width: SizeConfig.height * 16,
-                      //     child: ClipRRect(
-                      //       borderRadius: BorderRadius.circular(SizeConfig.height * 8),
-                      //       child: profileData.image == null
-                      //           ? Icon(
-                      //               Icons.person,
-                      //               size: SizeConfig.height * 15,
-                      //             )
-                      //           : Image.memory(
-                      //               base64Decode(profileData.image!),
-                      //               fit: BoxFit.cover,
-                      //             ),
-                      //     ),
-                      //   ),
-                      // ),
                       SizedBox(
                         height: 16.h,
                       ),

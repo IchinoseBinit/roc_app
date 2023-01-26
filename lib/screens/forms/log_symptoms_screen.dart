@@ -112,7 +112,7 @@ class _LogSymptomsScreenState extends State<LogSymptomsScreen> {
                       initialDate: DateTime.tryParse(dateController.text) ??
                           DateTime.now(),
                       firstDate:
-                          DateTime.now().subtract(const Duration(days: 30)),
+                          DateTime.now().subtract(const Duration(days: 360)),
                       lastDate: DateTime.now(),
                     );
                     if (date != null) {

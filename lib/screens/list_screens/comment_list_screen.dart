@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-import 'package:roc_app/models/appointment.dart';
 import 'package:roc_app/models/doctor_comments.dart';
-import 'package:roc_app/providers/user_provider.dart';
 import 'package:roc_app/screens/list_screens/comment_detail_screen.dart';
 import 'package:roc_app/utils/navigate.dart';
 
 import '/constants/constants.dart';
 import '/utils/firebase_helper.dart';
-import '/utils/util.dart';
 import '/widgets/body_template.dart';
 import '/widgets/header_template.dart';
 
@@ -30,16 +26,7 @@ class CommentListScreen extends StatelessWidget {
               SizedBox(
                 height: 24.h,
               ),
-              CommentBody(
-                stream: isAdmin(context)
-                    ? FirebaseHelper().getStream(
-                        collectionId: DoctorConstant.commentCollection)
-                    : FirebaseHelper().getStreamWithWhere(
-                        collectionId: DoctorConstant.commentCollection,
-                        whereId: "user.uuid",
-                        whereValue: getUserId(),
-                      ),
-              ),
+              const CommentBody(),
             ],
           ),
         ),
@@ -49,14 +36,24 @@ class CommentListScreen extends StatelessWidget {
 }
 
 class CommentBody extends StatelessWidget {
-  const CommentBody({super.key, required this.stream});
+  const CommentBody({
+    super.key,
+    this.doctorId,
+  });
 
-  final Stream stream;
+  final String? doctorId;
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: stream,
+      stream: doctorId != null
+          ? FirebaseHelper().getStreamWithWhere(
+              collectionId: DoctorConstant.commentCollection,
+              whereId: "doctor.id",
+              whereValue: doctorId,
+            )
+          : FirebaseHelper()
+              .getStream(collectionId: DoctorConstant.commentCollection),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator.adaptive();
@@ -86,7 +83,9 @@ class CommentBody extends StatelessWidget {
                     ),
                   ),
                   title: Text(
-                    comments[index].doctor.name,
+                    doctorId != null
+                        ? comments[index].user.name ?? ""
+                        : comments[index].doctor.name,
                   ),
                   subtitle: Text(
                     "${DateFormat("yyyy-MMM-dd").format(comments[index].dateTime)} ",

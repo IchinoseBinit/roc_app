@@ -49,10 +49,10 @@ class DoctorListScreen extends StatelessWidget {
                 height: 24.h,
               ),
               StreamBuilder(
-                stream: FirebaseHelper().getStreamWithWhere(
+                stream: FirebaseHelper().getStream(
                   collectionId: DoctorConstant.doctorCollection,
-                  whereId: DoctorConstant.userId,
-                  whereValue: getUserId(),
+                  // whereId: DoctorConstant.userId,
+                  // whereValue: getUserId(),
                 ),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -151,6 +151,7 @@ class DoctorListScreen extends StatelessWidget {
                                     GeneralTextField(
                                       labelText: "Comment",
                                       obscureText: false,
+                                      controller: commentController,
                                       textInputType: TextInputType.multiline,
                                       validate: (v) => ValidationMixin()
                                           .validate(v, title: "Comment"),

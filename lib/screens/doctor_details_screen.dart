@@ -27,19 +27,12 @@ class DoctorDetailsScreen extends StatelessWidget {
                 height: 24.h,
               ),
               DoctorBody(doctor: doctor),
-              // SizedBox(
-              //   height: 24.h,
-              // ),
-              // CommentBody(
-              //   stream: isAdmin(context)
-              //       ? FirebaseHelper().getStream(
-              //           collectionId: DoctorConstant.commentCollection)
-              //       : FirebaseHelper().getStreamWithMultipleWhere(
-              //           collectionId: DoctorConstant.commentCollection,
-              //           whereId: "user.uuid",
-              //           whereValue: getUserId(),
-              //         ),
-              // ),
+              SizedBox(
+                height: 24.h,
+              ),
+              CommentBody(
+                doctorId: doctor.id,
+              ),
             ],
           ),
         ),

@@ -2,20 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:roc_app/providers/user_provider.dart';
-import 'package:roc_app/screens/admin_screens/doctor_comment_list_screen.dart';
 import 'package:roc_app/screens/admin_screens/donation_list_screen.dart';
 import 'package:roc_app/screens/admin_screens/message_list_screen.dart';
 import 'package:roc_app/screens/auth/login_screen.dart';
-import 'package:roc_app/screens/list_screens/comment_list_screen.dart';
+import 'package:roc_app/screens/forms/update_profile_screen.dart';
 import 'package:roc_app/screens/list_screens/blood_marks_list_screen.dart';
+import 'package:roc_app/screens/list_screens/comment_list_screen.dart';
 import 'package:roc_app/screens/list_screens/log_symptoms_list_screen.dart';
 import 'package:roc_app/screens/list_screens/note_list_screen.dart';
-import 'package:roc_app/utils/firebase_helper.dart';
 import 'package:roc_app/utils/show_toast_message.dart';
 import 'package:roc_app/utils/util.dart';
 import 'package:roc_app/widgets/custom_loading_indicator.dart';
+
 import '/screens/about_us_screen.dart';
-import '/screens/forms/add_blood_mark_screen.dart';
 import '/screens/forms/contact_us_screen.dart';
 import '/screens/forms/donation_screen.dart';
 import '/utils/navigate.dart';
@@ -38,6 +37,19 @@ class MenuScreen extends StatelessWidget {
               ),
               SizedBox(
                 height: 24.h,
+              ),
+              Card(
+                child: ListTile(
+                  title: const Text("Change Profile"),
+                  onTap: () => navigate(context, UpdateProfileScreen()),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 18.h,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 8.h,
               ),
               Card(
                 child: ListTile(
