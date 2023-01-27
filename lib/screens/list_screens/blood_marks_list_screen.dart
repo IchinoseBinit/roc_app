@@ -50,11 +50,14 @@ class _BloodMarkListScreenState extends State<BloodMarkListScreen> {
                 height: 24.h,
               ),
               StreamBuilder(
-                stream: FirebaseHelper().getStreamWithWhere(
-                  collectionId: BloodMarkConstant.bloodMarkCollection,
-                  whereId: UserConstants.userId,
-                  whereValue: getUserId(),
-                ),
+                stream: isAdmin(context)
+                    ? FirebaseHelper().getStream(
+                        collectionId: BloodMarkConstant.bloodMarkCollection)
+                    : FirebaseHelper().getStreamWithWhere(
+                        collectionId: BloodMarkConstant.bloodMarkCollection,
+                        whereId: UserConstants.userId,
+                        whereValue: getUserId(),
+                      ),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator.adaptive();

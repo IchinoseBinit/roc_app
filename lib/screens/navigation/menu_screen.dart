@@ -131,20 +131,20 @@ class MenuScreen extends StatelessWidget {
               SizedBox(
                 height: 8.h,
               ),
-              if (!isAdmin(context)) ...[
-                Card(
-                  child: ListTile(
-                    title: const Text("Blood Marks"),
-                    onTap: () => navigate(context, const BloodMarkListScreen()),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      size: 18.h,
-                    ),
+              Card(
+                child: ListTile(
+                  title: const Text("Blood Marks"),
+                  onTap: () => navigate(context, const BloodMarkListScreen()),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 18.h,
                   ),
                 ),
-                SizedBox(
-                  height: 8.h,
-                ),
+              ),
+              SizedBox(
+                height: 8.h,
+              ),
+              if (!isAdmin(context)) ...[
                 Card(
                   child: ListTile(
                     title: const Text("Notes"),
