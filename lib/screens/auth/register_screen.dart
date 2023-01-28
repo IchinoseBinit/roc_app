@@ -1,21 +1,30 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '/screens/navigation/navigation_screen.dart';
-import '/screens/auth/register_profile_screen.dart';
-import '/utils/navigate.dart';
-import '/widgets/general_elevated_button.dart';
+import 'package:roc_app/components/password_field.dart';
+import 'package:roc_app/screens/auth/verify_register_screen.dart';
+
 import '/constants/constants.dart';
+import '/utils/navigate.dart';
 import '/utils/validation_mixin.dart';
 import '/widgets/general_alert_dialog.dart';
+import '/widgets/general_elevated_button.dart';
 import '/widgets/general_text_field.dart';
 
-class RegisterScreen extends StatelessWidget {
-  RegisterScreen({Key? key}) : super(key: key);
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({Key? key}) : super(key: key);
 
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
   final emailController = TextEditingController();
+
   final passwordController = TextEditingController();
+
   final confirmPasswordController = TextEditingController();
+
   final formKey = GlobalKey<FormState>();
 
   final confirmPasswordFocusNode = FocusNode();
@@ -89,30 +98,23 @@ class RegisterScreen extends StatelessWidget {
                     SizedBox(
                       height: 16.h,
                     ),
-                    GeneralTextField(
-                      labelText: "Password",
-                      obscureText: true,
+                    PasswordField(
                       controller: passwordController,
-                      textInputType: TextInputType.visiblePassword,
-                      textInputAction: TextInputAction.next,
-                      validate: (value) =>
-                          ValidationMixin().validatePassword(value!),
+                      onChanged: () {
+                        setState(() {});
+                      },
                     ),
                     SizedBox(
                       height: 16.h,
                     ),
-                    GeneralTextField(
-                      labelText: "Confirm Password",
-                      obscureText: true,
+                    PasswordField(
+                      isConfirmPassword: true,
                       focusNode: confirmPasswordFocusNode,
                       controller: confirmPasswordController,
-                      textInputType: TextInputType.visiblePassword,
-                      textInputAction: TextInputAction.done,
-                      validate: (value) => ValidationMixin().validatePassword(
-                        passwordController.text,
-                        isConfirmPassword: true,
-                        confirmValue: value!,
-                      ),
+                      confirmVal: passwordController.text,
+                      onChanged: () {
+                        setState(() {});
+                      },
                     ),
                     SizedBox(
                       height: 32.h,
@@ -140,14 +142,13 @@ class RegisterScreen extends StatelessWidget {
         GeneralAlertDialog().customLoadingDialog(context);
         final credential = await firebaseAuth.createUserWithEmailAndPassword(
             email: emailController.text, password: passwordController.text);
+
         if (credential.user?.uid != null) {
+          await credential.user!.sendEmailVerification();
           Navigator.pop(context);
           navigate(
             context,
-            RegisterProfileScreen(
-              uuid: credential.user!.uid,
-              email: credential.user!.email!,
-            ),
+            const VerifyRegisterScreen(),
           );
           // navigate(context, NavigationScreen());
         }

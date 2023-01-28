@@ -10,6 +10,9 @@ class User {
   late String? address;
   late bool isAdmin;
   late String phoneNumber;
+  late String cancerType;
+  late String dateOfBirth;
+  late String diagonisedDate;
 
   User({
     required this.uuid,
@@ -20,6 +23,9 @@ class User {
     required this.photoUrl,
     this.isAdmin = false,
     required this.phoneNumber,
+    required this.cancerType,
+    required this.dateOfBirth,
+    required this.diagonisedDate,
   });
 
   User.fromJson(Map obj) {
@@ -30,6 +36,9 @@ class User {
     photoUrl = obj["photoUrl"];
     address = obj["address"];
     phoneNumber = obj["phoneNumber"];
+    cancerType = obj["cancerType"] ?? "";
+    diagonisedDate = obj["diagonisedDate"] ?? "";
+    dateOfBirth = obj["dateOfBirth"] ?? "";
     isAdmin = obj["isAdmin"] ?? false;
   }
 
@@ -42,6 +51,9 @@ class User {
     map["address"] = address;
     map["isAdmin"] = isAdmin;
     map["phoneNumber"] = phoneNumber;
+    map["cancerType"] = cancerType;
+    map["diagonisedDate"] = diagonisedDate;
+    map["dateOfBirth"] = dateOfBirth;
 
     return map;
   }

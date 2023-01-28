@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:roc_app/utils/firebase_helper.dart';
 import 'package:roc_app/utils/show_toast_message.dart';
+import 'package:roc_app/utils/util.dart';
 
 import '/constants/constants.dart';
 import '/providers/user_provider.dart';
@@ -31,7 +33,9 @@ class RegisterProfileScreen extends StatelessWidget {
   final nameController = TextEditingController();
   final addressController = TextEditingController();
   final phoneController = TextEditingController();
-  final isFoodDonorController = TextEditingController();
+  final cancerTypeController = TextEditingController();
+  final diagonisedDateController = TextEditingController();
+  final dateOfBirthController = TextEditingController();
   final adminKeyController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
@@ -142,6 +146,81 @@ class RegisterProfileScreen extends StatelessWidget {
                       SizedBox(
                         height: 16.h,
                       ),
+                      GeneralTextField(
+                        labelText: "Cancer Type",
+                        obscureText: false,
+                        controller: cancerTypeController,
+                        // maxLength: 10,
+                        textInputType: TextInputType.text,
+                        textInputAction: TextInputAction.done,
+                        validate: (value) => ValidationMixin()
+                            .validate(value!, title: "Cancer Type"),
+                      ),
+                      SizedBox(
+                        height: 16.h,
+                      ),
+                      GeneralTextField(
+                        labelText: "Date Of Birth",
+                        controller: dateOfBirthController,
+                        obscureText: false,
+                        textInputType: TextInputType.none,
+                        readonly: true,
+                        suffixIcon: Icons.calendar_month_outlined,
+                        suffixIconColor: Theme.of(context).primaryColor,
+                        onTap: () async {
+                          final date = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.tryParse(
+                                    diagonisedDateController.text) ??
+                                DateTime.now(),
+                            firstDate: DateTime.now()
+                                .subtract(const Duration(days: 360 * 100)),
+                            lastDate: DateTime.now(),
+                          );
+                          if (date != null) {
+                            dateOfBirthController.text =
+                                DateFormat("yyyy-MM-dd").format(date);
+                          }
+                        },
+                        validate: (v) =>
+                            ValidationMixin().validate(v, title: "Date"),
+                        textInputAction: TextInputAction.next,
+                      ),
+                      SizedBox(
+                        height: 16.h,
+                      ),
+                      GeneralTextField(
+                        labelText: "Diagonised Date",
+                        controller: diagonisedDateController,
+                        obscureText: false,
+                        textInputType: TextInputType.none,
+                        readonly: true,
+                        suffixIcon: Icons.calendar_month_outlined,
+                        suffixIconColor: Theme.of(context).primaryColor,
+                        onTap: () async {
+                          final date = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.tryParse(
+                                    diagonisedDateController.text) ??
+                                DateTime.now(),
+                            firstDate:
+                                DateTime.tryParse(dateOfBirthController.text) ??
+                                    DateTime.now()
+                                        .subtract(const Duration(days: 360)),
+                            lastDate: DateTime.now(),
+                          );
+                          if (date != null) {
+                            diagonisedDateController.text =
+                                DateFormat("yyyy-MM-dd").format(date);
+                          }
+                        },
+                        validate: (v) =>
+                            ValidationMixin().validate(v, title: "Date"),
+                        textInputAction: TextInputAction.next,
+                      ),
+                      SizedBox(
+                        height: 16.h,
+                      ),
                       const Text(
                         "Note: Put the key only if you are an admin user. Leave empty if you are a normal user",
                       ),
@@ -174,6 +253,10 @@ class RegisterProfileScreen extends StatelessWidget {
                                 address: addressController.text,
                                 phoneNumber: phoneController.text,
                                 isAdmin: adminKeyController.text == "roc",
+                                cancerType: getText(cancerTypeController),
+                                diagonisedDate:
+                                    getText(diagonisedDateController),
+                                dateOfBirth: getText(dateOfBirthController),
                               );
                               await FirebaseHelper().addOrUpdateContent(
                                 context,

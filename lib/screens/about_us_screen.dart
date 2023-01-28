@@ -1,24 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:roc_app/utils/firebase_helper.dart';
 import '/constants/constants.dart';
 import '/widgets/body_template.dart';
 import '/widgets/header_template.dart';
 
 class AboutUsScreen extends StatelessWidget {
   const AboutUsScreen({super.key});
-
-  static const aboutText =
-      '''Rare Ovarian Cancer Incorporated (ROC Inc.) was set up to help raise money for much needed research for Rare Ovarian Cancers.
-
-Ovarian cancer is not just an old person’s disease. That’s a common misconception. Ovarian cancer doesn’t discriminate with age be it a child, adolescent or adult.
-Through research we can improve the way that Rare Ovarian Cancers can be treated and managed.
-
-Our Initiatives such as #RockForROC are designed to raise awareness for this important cause.
-
-Donate today and paint a rock to spread the word.
-
-Support Awareness and Research for Rare Ovarian Cancer
-''';
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +27,27 @@ Support Awareness and Research for Rare Ovarian Cancer
               SizedBox(
                 height: 12.h,
               ),
-              Text(
-                aboutText,
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
+              StreamBuilder(
+                  stream: FirebaseHelper().getStream(
+                    collectionId: "about",
+                  ),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator.adaptive();
+                    }
+                    final data = snapshot.data;
+                    if (data != null && data.docs.isNotEmpty) {
+                      return Text(
+                        data.docs.first["description"] ?? aboutText,
+                        style: Theme.of(context).textTheme.bodyText1,
+                      );
+                    }
+
+                    return Text(
+                      aboutText,
+                      style: Theme.of(context).textTheme.bodyText1,
+                    );
+                  }),
               SizedBox(
                 height: 24.h,
               ),

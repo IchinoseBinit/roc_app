@@ -25,20 +25,6 @@ class _BloodMarkListScreenState extends State<BloodMarkListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: isAdmin(context)
-          ? null
-          : Padding(
-              padding: EdgeInsets.only(bottom: 16.h),
-              child: GeneralElevatedButton(
-                marginH: 16.h,
-                title: "See Graph",
-                onPressed: () => navigate(
-                    context,
-                    BloodMarkGraphScreen(
-                      marks: bloodMarkList,
-                    )),
-              ),
-            ),
       body: SafeArea(
         child: BodyTemplate(
           child: Column(
@@ -79,6 +65,8 @@ class _BloodMarkListScreenState extends State<BloodMarkListScreen> {
                             vertical: 8.h,
                           ),
                           child: ListTile(
+                            onTap: () =>
+                                Navigator.pop(context, bloodMarkList[index]),
                             leading: CircleAvatar(
                               backgroundColor: Colors.grey.shade300,
                               child: const Icon(
@@ -86,7 +74,7 @@ class _BloodMarkListScreenState extends State<BloodMarkListScreen> {
                               ),
                             ),
                             title: Text(
-                              bloodMarkList[index].date,
+                              bloodMarkList[index].name,
                             ),
                             subtitle: Text(
                               "Protien: ${bloodMarkList[index].amountOfProtien}",

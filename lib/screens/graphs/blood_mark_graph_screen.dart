@@ -1,15 +1,13 @@
-import 'package:draw_graph/draw_graph.dart';
-import 'package:draw_graph/models/feature.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:roc_app/models/blood_mark.dart';
+import 'package:roc_app/models/log_blood_mark.dart';
+import 'package:roc_app/screens/graphs/log_symptoms_graph_screen.dart';
 import 'package:roc_app/widgets/body_template.dart';
 import 'package:roc_app/widgets/header_template.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 class BloodMarkGraphScreen extends StatefulWidget {
-  final List<BloodMark> marks;
+  final List<LogBloodMark> marks;
 
   const BloodMarkGraphScreen({super.key, required this.marks});
   @override
@@ -17,34 +15,46 @@ class BloodMarkGraphScreen extends StatefulWidget {
 }
 
 class _BloodMarkGraphScreenState extends State<BloodMarkGraphScreen> {
-  late final List<Feature> features = [];
-  late final List<int> list;
+  List<SymptomGraph> list = [];
 
   @override
   void initState() {
     super.initState();
-    features.add(
-      Feature(
-          color: Colors.red,
-          data: [
-            0,
-            ...widget.marks.map((e) => e.amountOfProtien.toDouble()).toList()
-          ],
-          title: "Protien"),
-    );
-    features.add(
-      Feature(
-          color: Colors.green,
-          data: [
-            0,
-            ...widget.marks.map((e) => e.referenceRange.toDouble()).toList()
-          ],
-          title: "Range"),
-    );
-    final sortedList = widget.marks
-      ..sort((a, b) => a.amountOfProtien.compareTo(b.amountOfProtien));
-    final val = sortedList.last.amountOfProtien / 6;
-    list = List.generate(7, (index) => (index * val.toDouble()).toInt());
+
+    for (var l in widget.marks) {
+      if (l.bloodMark != null) {
+        if (list.isEmpty) {
+          list.add(
+            SymptomGraph(
+              name: l.bloodMark!.name,
+              details: [
+                GraphDetail(
+                    dateTime: l.dateTime, rate: l.bloodMark!.amountOfProtien)
+              ],
+            ),
+          );
+        } else {
+          final index = list.indexWhere((element) =>
+              element.name.toLowerCase() == l.bloodMark!.name.toLowerCase());
+          if (index >= 0) {
+            list[index].details.add(
+                  GraphDetail(
+                      dateTime: l.dateTime, rate: l.bloodMark!.amountOfProtien),
+                );
+          } else {
+            list.add(
+              SymptomGraph(
+                name: l.bloodMark!.name,
+                details: [
+                  GraphDetail(
+                      dateTime: l.dateTime, rate: l.bloodMark!.amountOfProtien)
+                ],
+              ),
+            );
+          }
+        }
+      }
+    }
   }
 
   @override
@@ -70,19 +80,33 @@ class _BloodMarkGraphScreenState extends State<BloodMarkGraphScreen> {
                 ),
                 enableAxisAnimation: true,
                 series: <ChartSeries>[
-                  // Renders line chart
-                  LineSeries<BloodMark, String>(
+                  for (var l in list)
+                    SplineSeries<GraphDetail, String>(
+                      splineType: SplineType.monotonic,
+                      dataSource: l.details,
+                      xValueMapper: (GraphDetail detail, _) =>
+                          detail.dateTime.toString(),
+                      yValueMapper: (GraphDetail detail, _) => detail.rate,
+                      legendItemText: l.name,
+                    ),
+                  SplineSeries<LogBloodMark, String>(
+                    splineType: SplineType.monotonic,
                     dataSource: widget.marks,
-                    xValueMapper: (BloodMark mark, _) => mark.date.toString(),
-                    yValueMapper: (BloodMark mark, _) => mark.amountOfProtien,
-                    legendItemText: "Amount of Protien",
+                    xValueMapper: (LogBloodMark symptom, _) =>
+                        symptom.dateTime.toString(),
+                    yValueMapper: (LogBloodMark symptom, _) =>
+                        int.tryParse(symptom.inhibinB) ?? 0,
+                    legendItemText: "Inhibin B",
                   ),
-                  LineSeries<BloodMark, String>(
+                  SplineSeries<LogBloodMark, String>(
+                    splineType: SplineType.monotonic,
                     dataSource: widget.marks,
-                    xValueMapper: (BloodMark mark, _) => mark.date.toString(),
-                    yValueMapper: (BloodMark mark, _) => mark.referenceRange,
-                    legendItemText: "Reference Range",
-                  )
+                    xValueMapper: (LogBloodMark symptom, _) =>
+                        symptom.dateTime.toString(),
+                    yValueMapper: (LogBloodMark symptom, _) =>
+                        int.tryParse(symptom.ca125) ?? 0,
+                    legendItemText: "CA-125",
+                  ),
                 ],
               ),
               SizedBox(

@@ -2,22 +2,19 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:roc_app/providers/user_provider.dart';
-import 'package:roc_app/screens/forms/add_doctor_screen.dart';
-import 'package:roc_app/screens/forms/add_educational_resources_screen.dart';
-import 'package:roc_app/screens/forms/log_symptoms_screen.dart';
-import 'package:roc_app/screens/upload_medical_report_screen.dart';
-import 'package:roc_app/utils/curved_button.dart';
-import 'package:roc_app/utils/file_compressor.dart';
-import 'package:roc_app/utils/firebase_helper.dart';
-import 'package:roc_app/utils/image_picker.dart';
-import 'package:roc_app/utils/util.dart';
-import 'package:roc_app/widgets/custom_loading_indicator.dart';
-import '/constants/constants.dart';
-import '/screens/forms/add_blood_mark_screen.dart';
+import 'package:roc_app/screens/forms/about_us_form_screen.dart';
+
+import '/providers/user_provider.dart';
+import '../forms/blood_mark/add_blood_mark_screen.dart';
+import '/screens/forms/add_doctor_screen.dart';
+import '/screens/forms/add_educational_resources_screen.dart';
+import '/screens/forms/log_symptoms_screen.dart';
+import '/screens/upload_medical_report_screen.dart';
+import '/utils/curved_button.dart';
+import '/utils/image_picker.dart';
 import '/utils/navigate.dart';
+import '/utils/util.dart';
 import '/widgets/body_template.dart';
 import '/widgets/header_template.dart';
 
@@ -39,7 +36,9 @@ class HomeScreen extends StatelessWidget {
                 height: 24.h,
               ),
               Text(
-                "How is your pain ${user.name} today?",
+                isAdmin(context)
+                    ? "Hello ${user.name}, Glad to have you back"
+                    : "How is your pain ${user.name} today?",
                 style: Theme.of(context).textTheme.headline6!.copyWith(
                       fontSize: 18.sp,
                     ),
@@ -103,17 +102,19 @@ class HomeScreen extends StatelessWidget {
               SizedBox(
                 height: 40.h,
               ),
-              Text(
-                "Let's check in your symptoms",
-                style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-              SizedBox(
-                height: 40.h,
-              ),
-              if (isAdmin(context))
+              if (!isAdmin(context)) ...[
+                Text(
+                  "Let's check in your symptoms",
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                SizedBox(
+                  height: 40.h,
+                ),
+              ],
+              if (isAdmin(context)) ...[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -127,8 +128,18 @@ class HomeScreen extends StatelessWidget {
                           navigate(context, AddEducationalResourcesScreen()),
                     ),
                   ],
+                ),
+                SizedBox(
+                  height: 16.h,
+                ),
+                CurvedButton(
+                  title: "Edit About Us",
+                  onTap: () => navigate(
+                    context,
+                    AboutUsFormScreen(),
+                  ),
                 )
-              else ...[
+              ] else ...[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [

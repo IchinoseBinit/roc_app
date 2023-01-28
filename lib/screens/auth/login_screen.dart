@@ -5,10 +5,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:roc_app/components/password_field.dart';
 import 'package:roc_app/models/firebase_user.dart';
 import 'package:roc_app/providers/user_provider.dart';
 import 'package:roc_app/screens/auth/forgot_password_screen.dart';
 import 'package:roc_app/screens/auth/register_profile_screen.dart';
+import 'package:roc_app/screens/auth/verify_register_screen.dart';
 import 'package:roc_app/widgets/body_template.dart';
 
 import '/constants/constants.dart';
@@ -91,15 +93,8 @@ class LoginScreen extends StatelessWidget {
                       SizedBox(
                         height: 16.h,
                       ),
-                      GeneralTextField(
-                        labelText: "Password",
-                        autoFillHints: const [AutofillHints.password],
-                        obscureText: true,
+                      PasswordField(
                         controller: passwordController,
-                        textInputType: TextInputType.visiblePassword,
-                        textInputAction: TextInputAction.done,
-                        validate: (value) =>
-                            ValidationMixin().validatePassword(value!),
                       ),
                       SizedBox(height: 8.h),
                       Align(
@@ -159,6 +154,9 @@ class LoginScreen extends StatelessWidget {
           email: emailController.text, password: passwordController.text);
       final user = userCredential.user;
       if (user != null) {
+        if (!user.emailVerified) {
+          await navigate(context, VerifyRegisterScreen());
+        }
         final firestore = FirebaseFirestore.instance;
         final data = await firestore
             .collection(UserConstants.userCollection)
@@ -173,9 +171,10 @@ class LoginScreen extends StatelessWidget {
           map = data.docs.first.data();
         }
         Provider.of<UserProvider>(context, listen: false).setUser(map);
+
+        Navigator.pop(context);
+        navigateAndRemoveAll(context, NavigationScreen());
       }
-      Navigator.pop(context);
-      navigateAndRemoveAll(context, NavigationScreen());
     } on FirebaseAuthException catch (ex) {
       Navigator.pop(context);
       var message = "";

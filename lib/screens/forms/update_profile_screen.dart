@@ -35,6 +35,34 @@ class UpdateProfileScreen extends StatelessWidget {
                 SizedBox(
                   height: 24.h,
                 ),
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      children: [
+                        getText(context,
+                            title: "Cancer Type", value: user.cancerType),
+                        SizedBox(
+                          height: 16.h,
+                        ),
+                        getText(context,
+                            title: "Date Of Birth", value: user.dateOfBirth),
+                        SizedBox(
+                          height: 16.h,
+                        ),
+                        getText(context,
+                            title: "Diagonised Date",
+                            value: user.diagonisedDate),
+                        SizedBox(
+                          height: 16.h,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 GeneralTextField(
                   labelText: "Name",
                   obscureText: false,
@@ -92,6 +120,24 @@ class UpdateProfileScreen extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget getText(BuildContext context,
+      {required String title, required String value}) {
+    return Text.rich(
+      TextSpan(
+        text: "$title: ",
+        style: Theme.of(context).textTheme.bodyText1!.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+        children: [
+          TextSpan(
+            text: value,
+            style: Theme.of(context).textTheme.bodyText1,
+          )
+        ],
       ),
     );
   }

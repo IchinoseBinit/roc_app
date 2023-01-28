@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:roc_app/screens/graphs/log_symptoms_graph_screen.dart';
-import 'package:roc_app/screens/list_screens/log_symptom_detail_screen.dart';
+import 'package:roc_app/models/log_blood_mark.dart';
+import 'package:roc_app/screens/graphs/blood_mark_graph_screen.dart';
+import 'package:roc_app/screens/list_screens/log_blood_mark_detail_screen.dart';
 import 'package:roc_app/utils/navigate.dart';
 import 'package:roc_app/widgets/general_elevated_button.dart';
 
 import '/constants/constants.dart';
-import '/models/log_symptom.dart';
 import '/utils/firebase_helper.dart';
 import '/utils/util.dart';
 import '/widgets/body_template.dart';
 import '/widgets/header_template.dart';
 
-class LogSymptomsListScreen extends StatefulWidget {
-  const LogSymptomsListScreen({super.key});
+class LogBloodMarkListScreen extends StatefulWidget {
+  const LogBloodMarkListScreen({super.key});
 
   @override
-  State<LogSymptomsListScreen> createState() => _LogSymptomsListScreenState();
+  State<LogBloodMarkListScreen> createState() => _LogBloodMarkListScreenState();
 }
 
-class _LogSymptomsListScreenState extends State<LogSymptomsListScreen> {
-  List<LogSymptom> loggedSymptoms = [];
+class _LogBloodMarkListScreenState extends State<LogBloodMarkListScreen> {
+  List<LogBloodMark> loggedBloodMarks = [];
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +34,8 @@ class _LogSymptomsListScreenState extends State<LogSymptomsListScreen> {
                 title: "See Graph",
                 onPressed: () => navigate(
                     context,
-                    LogSymptomsGraphScreen(
-                      loggedBloodMark: loggedSymptoms,
+                    BloodMarkGraphScreen(
+                      marks: loggedBloodMarks,
                     )),
               ),
             ),
@@ -52,10 +52,10 @@ class _LogSymptomsListScreenState extends State<LogSymptomsListScreen> {
               StreamBuilder(
                 stream: isAdmin(context)
                     ? FirebaseHelper().getStream(
-                        collectionId: LogSymptomConstant.logSymptomCollection)
+                        collectionId: LogBloodMarkConstant.collection)
                     : FirebaseHelper().getStreamWithWhere(
-                        collectionId: LogSymptomConstant.logSymptomCollection,
-                        whereId: LogSymptomConstant.userId,
+                        collectionId: LogBloodMarkConstant.collection,
+                        whereId: LogBloodMarkConstant.userId,
                         whereValue: getUserId(),
                       ),
                 builder: (context, snapshot) {
@@ -64,8 +64,8 @@ class _LogSymptomsListScreenState extends State<LogSymptomsListScreen> {
                   }
                   final data = snapshot.data;
                   if (data?.docs != null && data!.docs.isNotEmpty) {
-                    loggedSymptoms = data.docs
-                        .map((e) => LogSymptom.fromMap(e.data(), e.id))
+                    loggedBloodMarks = data.docs
+                        .map((e) => LogBloodMark.fromMap(e.data(), e.id))
                         .toList()
                       ..sort((a, b) {
                         return DateTime.parse(b.dateTime.split(" ").first)
@@ -85,8 +85,8 @@ class _LogSymptomsListScreenState extends State<LogSymptomsListScreen> {
                           child: ListTile(
                             onTap: () => navigate(
                               context,
-                              LogSymptomDetailScreen(
-                                logSymptom: loggedSymptoms[index],
+                              LogBloodMarkDetailScreen(
+                                logBloodMark: loggedBloodMarks[index],
                               ),
                             ),
                             leading: CircleAvatar(
@@ -96,12 +96,12 @@ class _LogSymptomsListScreenState extends State<LogSymptomsListScreen> {
                               ),
                             ),
                             title: Text(
-                              loggedSymptoms[index].dateTime,
+                              loggedBloodMarks[index].dateTime,
                             ),
                             subtitle: Text(
-                              loggedSymptoms[index]
-                                      .symptom
-                                      ?.symptom
+                              loggedBloodMarks[index]
+                                      .bloodMark
+                                      ?.name
                                       .toString() ??
                                   "",
                             ),
@@ -112,13 +112,13 @@ class _LogSymptomsListScreenState extends State<LogSymptomsListScreen> {
                       separatorBuilder: (_, __) => SizedBox(
                         height: 8.h,
                       ),
-                      itemCount: loggedSymptoms.length,
+                      itemCount: loggedBloodMarks.length,
                       shrinkWrap: true,
                       primary: false,
                     );
                   }
                   return const Center(
-                    child: Text("No symptoms logged till now"),
+                    child: Text("No blood mark logged till now"),
                   );
                 },
               ),

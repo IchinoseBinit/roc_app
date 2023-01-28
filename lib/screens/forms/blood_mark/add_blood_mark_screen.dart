@@ -17,6 +17,7 @@ import '/widgets/header_template.dart';
 class AddBloodMarkScreen extends StatelessWidget {
   AddBloodMarkScreen({super.key});
 
+  final nameController = TextEditingController();
   final amountOfProtienController = TextEditingController();
   final referenceRangeController = TextEditingController();
   final dateController = TextEditingController();
@@ -31,6 +32,17 @@ class AddBloodMarkScreen extends StatelessWidget {
               const HeaderTemplate(headerText: "Add Blood Mark"),
               SizedBox(
                 height: 24.h,
+              ),
+              GeneralTextField(
+                labelText: "Name",
+                controller: nameController,
+                obscureText: false,
+                textInputType: TextInputType.text,
+                validate: (v) => ValidationMixin().validate(v, title: "Name"),
+                textInputAction: TextInputAction.next,
+              ),
+              SizedBox(
+                height: 12.h,
               ),
               GeneralTextField(
                 labelText: "Amount of Protien",
@@ -54,33 +66,6 @@ class AddBloodMarkScreen extends StatelessWidget {
                 textInputAction: TextInputAction.next,
               ),
               SizedBox(
-                height: 12.h,
-              ),
-              GeneralTextField(
-                labelText: "Date",
-                controller: dateController,
-                obscureText: false,
-                textInputType: TextInputType.none,
-                readonly: true,
-                suffixIcon: Icons.calendar_month_outlined,
-                suffixIconColor: Theme.of(context).primaryColor,
-                onTap: () async {
-                  final date = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.tryParse(dateController.text) ??
-                        DateTime.now(),
-                    firstDate:
-                        DateTime.now().subtract(const Duration(days: 30)),
-                    lastDate: DateTime.now(),
-                  );
-                  if (date != null) {
-                    dateController.text = DateFormat("yyyy-MM-dd").format(date);
-                  }
-                },
-                validate: (v) => ValidationMixin().validate(v, title: "Date"),
-                textInputAction: TextInputAction.next,
-              ),
-              SizedBox(
                 height: 24.h,
               ),
               GeneralElevatedButton(
@@ -89,11 +74,11 @@ class AddBloodMarkScreen extends StatelessWidget {
                   try {
                     onLoading(context);
                     final bloodMark = BloodMark(
+                      name: getText(nameController),
                       uuid: getUserId(),
                       amountOfProtien: double.parse(
                         getText(amountOfProtienController),
                       ),
-                      date: getText(dateController),
                       referenceRange: double.parse(
                         getText(referenceRangeController),
                       ),

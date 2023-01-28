@@ -13,17 +13,17 @@ class ContactUs {
 
   ContactUs.fromMap(Map obj) {
     name = obj["name"];
-    email = obj["email"];
-    subject = obj["subject"];
-    message = obj["message"];
+    email = obj["email"] ?? "";
+    subject = obj["subject"] ?? "";
+    message = obj["message"] ?? "";
   }
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map["name"] = name;
-    map["amount"] = email;
-    map["cardNumber"] = subject;
-    map["date"] = message;
+    map["email"] = email;
+    map["subject"] = subject;
+    map["message"] = message;
     return map;
   }
 }

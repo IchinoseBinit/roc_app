@@ -1,9 +1,6 @@
-import 'package:draw_graph/models/feature.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:roc_app/models/blood_mark.dart';
 import 'package:roc_app/models/log_symptom.dart';
-import 'package:roc_app/models/symptom.dart';
 import 'package:roc_app/widgets/body_template.dart';
 import 'package:roc_app/widgets/header_template.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';

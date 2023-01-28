@@ -28,6 +28,9 @@ class UserProvider extends ChangeNotifier {
     required String address,
     required String phoneNumber,
     required bool isAdmin,
+    required String cancerType,
+    required String diagonisedDate,
+    required String dateOfBirth,
   }) {
     _user = User(
       uuid: uuid,
@@ -38,6 +41,9 @@ class UserProvider extends ChangeNotifier {
       isAdmin: isAdmin,
       image: null,
       photoUrl: null,
+      cancerType: cancerType,
+      diagonisedDate: diagonisedDate,
+      dateOfBirth: dateOfBirth,
     );
     final map = _user.toJson();
     // _user = null;

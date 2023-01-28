@@ -20,6 +20,19 @@ const nepaliValue = "nepali";
 const phoneKey = "phone";
 const passwordKey = "password";
 
+const aboutText =
+    '''Rare Ovarian Cancer Incorporated (ROC Inc.) was set up to help raise money for much needed research for Rare Ovarian Cancers.
+
+Ovarian cancer is not just an old person’s disease. That’s a common misconception. Ovarian cancer doesn’t discriminate with age be it a child, adolescent or adult.
+Through research we can improve the way that Rare Ovarian Cancers can be treated and managed.
+
+Our Initiatives such as #RockForROC are designed to raise awareness for this important cause.
+
+Donate today and paint a rock to spread the word.
+
+Support Awareness and Research for Rare Ovarian Cancer
+''';
+
 class ImageConstants {
   static const _basePath = "assets/images";
   static const logo = "$_basePath/logo.png";
@@ -68,6 +81,11 @@ class SymptomConstant {
 
 class LogSymptomConstant {
   static const logSymptomCollection = "log-symptom";
+  static const userId = "userId";
+}
+
+class LogBloodMarkConstant {
+  static const collection = "log-blood-mark";
   static const userId = "userId";
 }
 

@@ -72,6 +72,10 @@ class DoctorBody extends StatelessWidget {
           height: 16.h,
         ),
         getText(context, title: "Experience", value: doctor.experience),
+        SizedBox(
+          height: 16.h,
+        ),
+        getText(context, title: "Review", value: doctor.review),
       ],
     );
   }

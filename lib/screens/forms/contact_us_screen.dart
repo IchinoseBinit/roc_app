@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:roc_app/constants/constants.dart';
 import 'package:roc_app/models/contact_us.dart';
@@ -98,6 +99,15 @@ class ContactUsScreen extends StatelessWidget {
                       subject: getText(subjectController),
                       message: getText(messageController),
                     ).toJson();
+                    final body =
+                        "${getText(messageController)}\n\nRegards\n${getText(nameController)}";
+                    final email = Email(
+                      body: body,
+                      subject: getText(subjectController),
+                      recipients: ["tasha31071@gmail.com"],
+                    );
+
+                    await FlutterEmailSender.send(email);
                     await FirebaseHelper().addData(
                       context,
                       map: contactUs,
