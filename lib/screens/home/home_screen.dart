@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:roc_app/screens/forms/about_us_form_screen.dart';
+import 'package:roc_app/screens/forms/blood_mark/log_blood_mark_screen.dart';
 
 import '/providers/user_provider.dart';
 import '../forms/blood_mark/add_blood_mark_screen.dart';
@@ -148,8 +149,9 @@ class HomeScreen extends StatelessWidget {
                       onTap: () => navigate(context, LogSymptomsScreen()),
                     ),
                     CurvedButton(
-                      title: "Blood Marker",
-                      onTap: () => navigate(context, AddBloodMarkScreen()),
+                      title: "Log Blood Marker",
+                      onTap: () =>
+                          navigate(context, const LogBloodMarkScreen()),
                     ),
                   ],
                 ),

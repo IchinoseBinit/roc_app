@@ -35,7 +35,7 @@ class _LogSymptomsListScreenState extends State<LogSymptomsListScreen> {
                 onPressed: () => navigate(
                     context,
                     LogSymptomsGraphScreen(
-                      loggedBloodMark: loggedSymptoms,
+                      loggedSymptom: loggedSymptoms,
                     )),
               ),
             ),

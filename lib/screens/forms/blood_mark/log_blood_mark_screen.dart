@@ -82,7 +82,7 @@ class _LogBloodMarkScreenState extends State<LogBloodMarkScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const HeaderTemplate(headerText: "Log Symptoms"),
+                const HeaderTemplate(headerText: "Log Blood Mark"),
                 SizedBox(
                   height: 24.h,
                 ),

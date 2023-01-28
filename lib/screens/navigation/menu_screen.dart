@@ -8,10 +8,10 @@ import 'package:roc_app/screens/auth/login_screen.dart';
 import 'package:roc_app/screens/forms/update_profile_screen.dart';
 import 'package:roc_app/screens/list_screens/blood_marks_list_screen.dart';
 import 'package:roc_app/screens/list_screens/comment_list_screen.dart';
+import 'package:roc_app/screens/list_screens/log_blood_mark_list_screen.dart';
 import 'package:roc_app/screens/list_screens/log_symptoms_list_screen.dart';
 import 'package:roc_app/screens/list_screens/note_list_screen.dart';
 import 'package:roc_app/screens/list_screens/uploaded_report_screen.dart';
-import 'package:roc_app/screens/upload_medical_report_screen.dart';
 import 'package:roc_app/utils/show_toast_message.dart';
 import 'package:roc_app/utils/util.dart';
 import 'package:roc_app/widgets/custom_loading_indicator.dart';
@@ -150,8 +150,9 @@ class MenuScreen extends StatelessWidget {
               ),
               Card(
                 child: ListTile(
-                  title: const Text("Blood Marks"),
-                  onTap: () => navigate(context, const BloodMarkListScreen()),
+                  title: const Text("Logged Blood Marks"),
+                  onTap: () =>
+                      navigate(context, const LogBloodMarkListScreen()),
                   trailing: Icon(
                     Icons.arrow_forward_ios,
                     size: 18.h,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:roc_app/models/blood_mark.dart';
+import 'package:roc_app/screens/forms/blood_mark/add_blood_mark_screen.dart';
 import 'package:roc_app/screens/graphs/blood_mark_graph_screen.dart';
 import 'package:roc_app/utils/navigate.dart';
 import 'package:roc_app/utils/show_toast_message.dart';
@@ -25,6 +26,16 @@ class _BloodMarkListScreenState extends State<BloodMarkListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: isAdmin(context)
+          ? null
+          : Padding(
+              padding: EdgeInsets.only(bottom: 16.h),
+              child: GeneralElevatedButton(
+                marginH: 16.h,
+                title: "Add Blood Mark",
+                onPressed: () => navigate(context, AddBloodMarkScreen()),
+              ),
+            ),
       body: SafeArea(
         child: BodyTemplate(
           child: Column(
