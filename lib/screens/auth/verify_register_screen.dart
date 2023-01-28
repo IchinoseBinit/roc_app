@@ -31,7 +31,7 @@ class _VerifyRegisterScreenState extends State<VerifyRegisterScreen> {
       final user = FirebaseAuth.instance.currentUser!;
 
       final isEmailVerified = user.emailVerified;
-      if (!isEmailVerified) {
+      if (isEmailVerified) {
         timer.cancel();
         if (widget.isFromLogin) {
           Navigator.pop(context);
