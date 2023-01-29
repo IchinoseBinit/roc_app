@@ -131,6 +131,6 @@ class _VerifyRegisterScreenState extends State<VerifyRegisterScreen> {
   onSubmit(BuildContext context) async {
     onLoading(context);
     await FirebaseAuth.instance.currentUser!.sendEmailVerification();
-    if (context.mounted) Navigator.pop(context);
+    Navigator.pop(context);
   }
 }
