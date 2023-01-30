@@ -9,7 +9,7 @@
     </queries>
 
     <application
-        android:label="Log Tracker"
+        android:label="Ovarian Cancer Tracker"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
