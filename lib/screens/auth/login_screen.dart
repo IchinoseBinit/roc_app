@@ -96,17 +96,6 @@ class LoginScreen extends StatelessWidget {
                       PasswordField(
                         controller: passwordController,
                       ),
-                      SizedBox(height: 8.h),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: InkWell(
-                          onTap: () => navigate(
-                            context,
-                            ForgotPasswordScreen(),
-                          ),
-                          child: const Text("Forgot Password?"),
-                        ),
-                      ),
                       SizedBox(
                         height: 32.h,
                       ),
@@ -155,7 +144,11 @@ class LoginScreen extends StatelessWidget {
       final user = userCredential.user;
       if (user != null) {
         if (!user.emailVerified) {
-          await navigate(context, VerifyRegisterScreen());
+          await navigate(
+              context,
+              VerifyRegisterScreen(
+                isFromLogin: true,
+              ));
         }
         final firestore = FirebaseFirestore.instance;
         final data = await firestore

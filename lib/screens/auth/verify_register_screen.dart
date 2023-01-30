@@ -6,7 +6,9 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:roc_app/constants/constants.dart';
+import 'package:roc_app/screens/auth/login_screen.dart';
 import 'package:roc_app/screens/auth/register_profile_screen.dart';
+import 'package:roc_app/screens/auth/register_screen.dart';
 import 'package:roc_app/utils/navigate.dart';
 import 'package:roc_app/widgets/custom_loading_indicator.dart';
 import 'package:roc_app/widgets/general_elevated_button.dart';
@@ -54,6 +56,18 @@ class _VerifyRegisterScreenState extends State<VerifyRegisterScreen> {
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.only(
+            bottom: 16,
+          ),
+          child: GeneralElevatedButton(
+            onPressed: () => navigateAndRemoveAll(context,
+                widget.isFromLogin ? LoginScreen() : const RegisterScreen()),
+            title: "Switch Account",
+            bgColor: Colors.red,
+            marginH: 16,
+          ),
+        ),
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -74,13 +88,6 @@ class _VerifyRegisterScreenState extends State<VerifyRegisterScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    IconButton(
-                      onPressed: () => Navigator.pop(context),
-                      icon: Icon(
-                        Icons.arrow_back_ios,
-                        size: 20.h,
-                      ),
-                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
